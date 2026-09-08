@@ -4,6 +4,7 @@ import hashlib
 import hmac
 import base64
 import requests
+import json
 
 # 1. 페이지 기본 설정
 st.set_page_config(page_title="위드멤버 마케팅 자동화 툴", page_icon="📊", layout="wide")
@@ -35,19 +36,21 @@ def get_header(method, uri, api_key, secret_key, customer_id):
         "X-Signature": signature
     }
 
-# 4. 네이버 검색광고 API 호출 함수 (파라미터 수정 완료)
+# 4. 네이버 검색광고 API 호출 함수 (GET -> POST 및 JSON Body 방식으로 전면 수정)
 def get_naver_keyword_data(hint_keyword):
     BASE_URL = "https://api.searchad.naver.com"
     URI = "/keywordstool"
-    METHOD = "GET"
+    METHOD = "POST" # 네이버 키워드툴은 POST 요청 방식입니다.
     
     headers = get_header(METHOD, URI, NAVER_CLIENT_ID, NAVER_CLIENT_SECRET, NAVER_CUSTOMER_ID)
     
-    # 네이버 API 규격에 맞게 공백 제거 처리
-    clean_keyword = hint_keyword.strip()
-    params = {"hintKeywords": clean_keyword, "showDetail": 1}
+    # 네이버 API 규격에 맞는 JSON Body 데이터 구성
+    body = {
+        "hintKeywords": [hint_keyword.strip()],
+        "showDetail": 1
+    }
     
-    response = requests.get(BASE_URL + URI, headers=headers, params=params)
+    response = requests.post(BASE_URL + URI, headers=headers, data=json.dumps(body))
     
     if response.status_code == 200:
         return True, response.json().get("keywordList", [])
