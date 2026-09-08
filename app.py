@@ -5,6 +5,7 @@ import datetime
 import hashlib
 import hmac
 import base64
+import re
 
 # 1. 페이지 기본 설정
 st.set_page_config(page_title="위드멤버 마케팅 자동화 툴", page_icon="📊", layout="wide")
@@ -27,7 +28,7 @@ def generate_signature(timestamp, method, uri):
     hash_val = hmac.new(SECRET_KEY.encode("utf-8"), message.encode("utf-8"), hashlib.sha256).digest()
     return base64.b64encode(hash_val).decode("utf-8")
 
-# 4. 네이버 키워드툴 API 호출 함수 (안정적인 표준 방식으로 재구현)
+# 4. 네이버 키워드툴 API 호출 함수 (정제 로직 강화)
 def fetch_naver_keywords(keyword):
     method = "GET"
     uri = "/keywordstool"
@@ -35,8 +36,10 @@ def fetch_naver_keywords(keyword):
     
     signature = generate_signature(timestamp, method, uri)
     
-    # URL 파라미터 인코딩
-    encoded_keyword = urllib.parse.quote(keyword)
+    # 특수문자 및 연속 공백 제거 (네이버 API 규격 에러 방지)
+    cleaned_keyword = re.sub(r'[\s]+', ' ', keyword).strip()
+    
+    encoded_keyword = urllib.parse.quote(cleaned_keyword)
     url = f"https://api.searchad.naver.com{uri}?hintKeywords={encoded_keyword}&showDetail=1"
     
     headers = {
@@ -59,17 +62,17 @@ def fetch_naver_keywords(keyword):
 
 # 5. 앱 UI 및 실행 로직
 st.subheader("🔍 네이버 연관 키워드 및 검색량 실시간 조회")
-keyword_input = st.text_input("분석할 키워드를 입력하세요 (예: 광주 술집, 플레이스최적화 등)")
+keyword_input = st.text_input("분석할 키워드를 입력하세요 (예: 광주술집, 플레이스최적화 등 - 띄어쓰기 주의)")
 
 if st.button("데이터 분석 실행"):
     if keyword_input:
         with st.spinner(f"'{keyword_input}' 키워드 데이터를 네이버에서 불러오는 중입니다..."):
-            success, result = fetch_naver_keywords(keyword_input.strip())
+            success, result = fetch_naver_keywords(keyword_input)
             
             if success and result:
                 st.success("데이터 연동 성공! 실시간 네이버 검색광고 통계입니다.")
                 
-                for item in result[:10]: # 상위 10개 출력
+                for item in result[:10]:
                     kw = item.get("relKeyword")
                     pc_q = item.get("monthlyPcQcCnt")
                     mo_q = item.get("monthlyMobileQcCnt")
@@ -87,5 +90,6 @@ if st.button("데이터 분석 실행"):
             else:
                 st.error("데이터 연동 실패 원인:")
                 st.code(result)
+                st.info("💡 Tip: 만약 코드를 고쳐도 이 에러가 지속된다면, 네이버 검색광고 시스템(searchad.naver.com)의 [도구] -> [API 사용 관리] 메뉴에서 '키워드 도구' API 권한이 정상적으로 체크/신청되어 있는지 확인해 주세요.")
     else:
         st.warning("키워드를 먼저 입력해주세요.")
