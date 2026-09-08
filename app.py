@@ -4,7 +4,6 @@ import hashlib
 import hmac
 import base64
 import requests
-import json
 
 # 1. 페이지 기본 설정
 st.set_page_config(page_title="위드멤버 마케팅 자동화 툴", page_icon="📊", layout="wide")
@@ -44,7 +43,7 @@ def get_naver_keyword_data(hint_keyword):
     
     headers = get_header(METHOD, URI, NAVER_CLIENT_ID, NAVER_CLIENT_SECRET, NAVER_CUSTOMER_ID)
     
-    # 네이버 API 규격에 맞게 콤마로 분리 및 공백 제거 처리
+    # 네이버 API 규격에 맞게 공백 제거 처리
     clean_keyword = hint_keyword.strip()
     params = {"hintKeywords": clean_keyword, "showDetail": 1}
     
