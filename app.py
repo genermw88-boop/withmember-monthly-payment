@@ -4,6 +4,7 @@ import hashlib
 import hmac
 import base64
 import requests
+import json
 
 # 1. 페이지 기본 설정
 st.set_page_config(page_title="위드멤버 마케팅 자동화 툴", page_icon="📊", layout="wide")
@@ -35,18 +36,20 @@ def get_header(method, uri, api_key, secret_key, customer_id):
         "X-Signature": signature
     }
 
-# 4. 네이버 검색광고 API 호출 함수 (상세 에러 확인용)
-def get_naver_keyword_data(hint_keywords):
+# 4. 네이버 검색광고 API 호출 함수 (파라미터 수정 완료)
+def get_naver_keyword_data(hint_keyword):
     BASE_URL = "https://api.searchad.naver.com"
     URI = "/keywordstool"
     METHOD = "GET"
     
     headers = get_header(METHOD, URI, NAVER_CLIENT_ID, NAVER_CLIENT_SECRET, NAVER_CUSTOMER_ID)
-    params = {"hintKeywords": hint_keywords, "showDetail": 1}
+    
+    # 네이버 API 규격에 맞게 콤마로 분리 및 공백 제거 처리
+    clean_keyword = hint_keyword.strip()
+    params = {"hintKeywords": clean_keyword, "showDetail": 1}
     
     response = requests.get(BASE_URL + URI, headers=headers, params=params)
     
-    # 디버깅을 위해 상태 코드와 에러 내용을 리턴
     if response.status_code == 200:
         return True, response.json().get("keywordList", [])
     else:
@@ -81,6 +84,6 @@ if st.button("데이터 분석 실행"):
                     """)
             else:
                 st.error("데이터 연동 실패 원인:")
-                st.code(api_data) # 네이버가 뱉어낸 진짜 에러 메시지를 화면에 출력
+                st.code(api_data)
     else:
         st.warning("키워드를 먼저 입력해주세요.")
