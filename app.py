@@ -46,6 +46,14 @@ has_coupon = col_t3.checkbox("네이버 쿠폰", value=False)
 has_call = col_t4.checkbox("안심번호(스마트콜)", value=False)
 
 st.markdown("---")
+st.subheader("💰 3. 3개월 후 예상 매출 목표 선택")
+sales_goal_option = st.radio(
+    "원하시는 3개월 후 예상 매출 규모를 선택해주세요.",
+    ("500만원 ~ 700만원", "1000만원 ~ 1300만원", "1500만원 ~ 2000만원"),
+    horizontal=True
+)
+
+st.markdown("---")
 
 # 진단 실행 버튼
 if st.button("🚀 1, 2차 독립형 리포트 생성"):
@@ -137,10 +145,17 @@ if st.button("🚀 1, 2차 독립형 리포트 생성"):
             visitor_problem = f"입력하신 방문자 리뷰가 총 <span class='highlight-red'>{visitor_reviews}개</span>로 양호하나, 최신 리뷰 갱신 주기나 세부 키워드 매칭 관리가 다소 미흡합니다."
             visitor_solution = "주기적인 피드백 관리와 핵심 키워드가 자연스럽게 녹아든 양질의 방문자 리뷰를 지속적으로 누적해야 합니다."
 
-        # 2차 제안서용 상승 점수 및 매출액 랜덤 생성
-        expected_score_increase = random.randint(65, 85)
-        projected_sales = random.randint(15000000, 20000000)
+        # 선택된 매출 옵션에 따라 범위 내에서 랜덤 매출액 설정
+        if sales_goal_option == "500만원 ~ 700만원":
+            projected_sales = random.randint(5000000, 7000000)
+        elif sales_goal_option == "1000만원 ~ 1300만원":
+            projected_sales = random.randint(10000000, 13000000)
+        else: # 1500만원 ~ 2000만원
+            projected_sales = random.randint(15000000, 20000000)
+
         projected_sales_formatted = f"{projected_sales / 10000:,.0f}만원"
+
+        expected_score_increase = random.randint(65, 85)
 
         # ---------------------------------------------------------
         # 1번 리포트 HTML
@@ -310,10 +325,10 @@ if st.button("🚀 1, 2차 독립형 리포트 생성"):
                 </div>
 
                 <div class="content-section">
-                    <div class="section-heading">💡 2. 5,000~10,000건 키워드 최적화 개선점</div>
+                    <div class="section-heading">💡 2. 핵심 키워드 최적화 개선점</div>
                     <div class="detail-row" style="margin-bottom: 0;">
                         <span class="label-text">개선 기대효과 :</span>
-                        <span class="desc-text">매월 주기적인 PC·모바일 검색량 조사를 기반으로 <span class="highlight-red">월 검색량 5,000~10,000건 규모의 고효율 핵심 대표키워드로 재설정</span>할 경우, 상권 내 유효 트래픽을 빠르게 독점하여 검색 노출 순위가 1~2페이지로 급상승하며 예약 및 매출로 즉각 이어집니다.</span>
+                        <span class="desc-text">매월 주기적인 PC·모바일 검색량 조사를 기반으로 <span class="highlight-red">고효율 핵심 대표키워드로 재설정</span>할 경우, 상권 내 유효 트래픽을 빠르게 독점하여 검색 노출 순위가 1~2페이지로 급상승하며 예약 및 매출로 즉각 이어집니다.</span>
                     </div>
                 </div>
 
