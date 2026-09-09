@@ -60,13 +60,12 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
         else:
             kw_list_str = "등록된 키워드 없음"
         
-        # 도구 상태 및 색상 클래스 분기 (등록: 초록색, 미등록: 빨간색)
+        # 도구 상태 및 색상 클래스 분기
         booking_html = "<span class='highlight-green'>등록</span>" if has_booking else "<span class='highlight-red'>미등록</span>"
         talk_html = "<span class='highlight-green'>등록</span>" if has_talk else "<span class='highlight-red'>미등록</span>"
         coupon_html = "<span class='highlight-green'>등록</span>" if has_coupon else "<span class='highlight-red'>미등록</span>"
         call_html = "<span class='highlight-green'>등록</span>" if has_call else "<span class='highlight-red'>미등록</span>"
         
-        # 체크된 항목과 안 된 항목 동적 분기
         registered_list = []
         if has_booking: registered_list.append("네이버 예약")
         if has_talk: registered_list.append("네이버 톡톡")
@@ -93,14 +92,21 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
             tool_problem = "필수 마케팅 도구(예약, 톡톡, 쿠폰, 안심번호)가 모두 빠짐없이 완벽하게 등록되어 있습니다."
             tool_solution = "모든 도구가 훌륭하게 세팅되어 있으므로, 각 도구 연계 프로필 이벤트나 응대 속도를 최상위로 유지하여 전환율을 방어해야 합니다."
 
+        # 요청하신 랜덤 지표 생성
+        random_score = random.randint(10, 30)
+        random_page_start = random.randint(6, 9)
+        random_page_end = random_page_start + 1
+        random_rank_str = f"{random_page_start}~{random_page_end}페이지"
+        
+        random_competitor_percent = random.randint(80, 90)
+        
         # 30~50개 사이 랜덤 경쟁 매장 수 생성
         random_competitors = random.randint(30, 50)
         
-        # 4번 항목: 반경 500M 상권 경쟁 진단 및 개선점 생성
         competitor_analysis = f"타겟 상권 반경 500M 내 동종 업계 경쟁 매장은 <span class='highlight-red'>약 {random_competitors}개</span>로 밀집도가 매우 높습니다."
         competitor_solution = f"치열한 상권 밀집도 속에서 우위를 점하기 위해, 상위 노출 경쟁사들의 마케팅 패턴을 분석하고 차별화된 메뉴 강조 포인트와 타겟 맞춤형 플레이스 상위 최적화 전략을 즉시 도입해야 합니다."
 
-        # 5번 항목: 블로그 리뷰 문제점 및 개선점 생성
+        # 블로그 리뷰 진단
         if blog_reviews < 10:
             blog_problem = f"입력하신 블로그 리뷰가 총 <span class='highlight-red'>{blog_reviews}개</span>로 매우 부족하여, 검색 이용자들이 충분한 바이럴 정보를 접하지 못해 브랜드 신뢰 형성과 예약 전환에 큰 걸림돌이 되고 있습니다."
             blog_solution = "지역 및 업종 타겟 맞춤형 체험단 마케팅을 집중 집행하여 검색 포털 내 브랜드 노출량과 신뢰성 리포트를 확실하게 확보해야 합니다."
@@ -111,7 +117,7 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
             blog_problem = f"입력하신 블로그 리뷰가 총 <span class='highlight-red'>{blog_reviews}개</span>로 탄탄한 편이나, 최신 트렌드 키워드 반영 및 관리 주기 최적화가 필요합니다."
             blog_solution = "검색 알고리즘 변화에 맞춘 고품질 리뷰 콘텐츠를 지속 공급하여 바이럴 지수를 최상위로 유지해야 합니다."
 
-        # 6번 항목: 입력한 방문자 리뷰 수 문제점 및 개선점 생성
+        # 방문자 리뷰 진단
         if visitor_reviews < 20:
             visitor_problem = f"입력하신 방문자 리뷰가 총 <span class='highlight-red'>{visitor_reviews}개</span>로 상권 내 경쟁 매장들에 비해 턱없이 부족하여, 매장의 신뢰도가 크게 떨어지고 잠재 고객의 이탈을 초래하고 있습니다."
             visitor_solution = "영수증 리뷰 이벤트 및 매장 방문 고객 대상 즉시 참여 혜택을 설계하여 방문자 리뷰 볼륨을 단기간에 대폭 끌어올려야 합니다."
@@ -260,15 +266,15 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
                 <div class="summary-cards">
                     <div class="card">
                         <div class="card-title">플레이스 종합 점수</div>
-                        <div class="card-val">25점 (취약)</div>
+                        <div class="card-val">{random_score}점 (취약)</div>
                     </div>
                     <div class="card">
-                        <div class="card-title">예상 노출 순위</div>
-                        <div class="card-val">7~10페이지</div>
+                        <div class="card-title">현재 노출 순위</div>
+                        <div class="card-val">{random_rank_str}</div>
                     </div>
                     <div class="card">
                         <div class="card-title">상권 경쟁 지수</div>
-                        <div class="card-val">하위 90%</div>
+                        <div class="card-val">하위 {random_competitor_percent}%</div>
                     </div>
                 </div>
 
