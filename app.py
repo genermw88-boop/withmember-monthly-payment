@@ -60,28 +60,41 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
         else:
             kw_list_str = "등록된 키워드 없음"
         
-        # 도구 상태 표시 문자열 생성
+        # 도구 상태 확인 및 미등록 항목 추출
+        tools = {"네이버 예약": has_booking, "네이버 톡톡": has_talk, "네이버 쿠폰": has_coupon, "안심번호": has_call}
+        missing_tools = [name for name, status in tools.items() if not status]
+        registered_tools = [name for name, status in tools.items() if status]
+        
         booking_status = "등록" if has_booking else "미등록"
         talk_status = "등록" if has_talk else "미등록"
         coupon_status = "등록" if has_coupon else "미등록"
         call_status = "등록" if has_call else "미등록"
         
+        # 도구 관련 문제점 및 개선점 생성
+        if missing_tools:
+            missing_str = ", ".join(missing_tools)
+            tool_problem = f"필수 마케팅 도구 중 <span class='highlight-red'>{missing_str}</span> 항목이 누락되어 있어, 네이버 알고리즘 평가에서 가산점을 확보하지 못하고 검색 순위가 하락하는 원인이 됩니다."
+            tool_solution = f"누락된 <span class='highlight-red'>{missing_str}</span> 도구를 즉시 세팅하여 플랫폼 가산점을 확보하고, 유저 편의성을 높여 예약 및 전환율을 극대화해야 합니다."
+        else:
+            tool_problem = "핵심 마케팅 도구는 모두 등록되어 있으나, 각 기능의 연계 활용도와 최적화 세팅 정밀도가 다소 부족합니다."
+            tool_solution = "등록된 도구들과 연계한 프로필 이벤트 및 톡톡 응대 자동화를 통해 전환 효율을 더욱 높여야 합니다."
+
         # 30~50개 사이 랜덤 경쟁 매장 수 생성
         random_competitors = random.randint(30, 50)
         
-        # 리뷰 상태에 따른 전문적인 AI 진단 문구 판단 로직
+        # 리뷰 분석 및 문제점/개선점 생성
         total_reviews = visitor_reviews + blog_reviews
         if total_reviews < 30:
-            review_evaluation = f"현재 방문자 리뷰 {visitor_reviews}개, 블로그 리뷰 {blog_reviews}개로 상권 평균(약 150개 이상)에 비해 평판 지수가 심각하게 부족합니다. 신뢰도 저하로 인한 유저 이탈이 발생하고 있습니다."
-            review_solution = "초기 고객 신뢰 회복을 위해 체험단 및 영수증 리뷰 마케팅을 집중 투입하여 평판 볼륨을 즉시 끌어올려야 합니다."
+            review_problem = f"방문자 리뷰 {visitor_reviews}개, 블로그 리뷰 {blog_reviews}개로 상권 평균에 비해 평판 볼륨이 매우 부족하여, 고객 신뢰도 하락과 이탈을 초래하고 있습니다."
+            review_solution = "초기 신뢰 회복을 위해 체험단 및 영수증 리뷰 마케팅을 집중 투입하여 상권 평균 이상의 리뷰 볼륨을 즉시 확보해야 합니다."
         elif total_reviews < 100:
-            review_evaluation = f"현재 방문자 리뷰 {visitor_reviews}개, 블로그 리뷰 {blog_reviews}개로 보통 수준이나, 상위 노출 경쟁 매장들에 비해서는 여전히 리뷰 경쟁력이 다소 밀리는 편입니다."
-            review_solution = "상권 상위 20% 진입을 위해 타겟 키워드 연계 블로그 리뷰 및 단골 고객 유도 프로필 혜택을 강화해야 합니다."
+            review_problem = f"방문자 리뷰 {visitor_reviews}개, 블로그 리뷰 {blog_reviews}개로 보통 수준이나, 상위 노출 경쟁 매장들에 비해 평판 점수가 다소 밀려 유입 경쟁력이 약화되어 있습니다."
+            review_solution = "상권 상위 20% 진입을 위해 타겟 키워드 연계 블로그 리뷰와 단골 유도 프로필 혜택을 강화해야 합니다."
         else:
-            review_evaluation = f"현재 방문자 리뷰 {visitor_reviews}개, 블로그 리뷰 {blog_reviews}개로 리뷰 볼륨은 양호하나, 누락된 마케팅 도구와 키워드 최적화 미비로 인해 트래픽이 매출로 전환되지 못하고 있습니다."
+            review_problem = f"방문자 리뷰 {visitor_reviews}개, 블로그 리뷰 {blog_reviews}개로 리뷰 볼륨은 양호하나, 키워드 최적화 및 도구 연동 미비로 트래픽이 매출로 이어지지 못하고 있습니다."
             review_solution = "확보된 리뷰 평판을 바탕으로 고효율 대표키워드 전환 및 스마트 도구 연동을 완료하여 유입 극대화를 달성해야 합니다."
 
-        # 최종 리포트 HTML 생성 (빨간색 강조 통일 및 간격 정렬)
+        # 최종 리포트 HTML 생성
         report_html = f"""
         <!DOCTYPE html>
         <html>
@@ -248,25 +261,33 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
                 </div>
 
                 <div class="content-section">
-                    <div class="section-heading">🛠️ 3. 네이버 마케팅 도구 세팅 현황</div>
-                    <div class="detail-row" style="margin-bottom: 0;">
+                    <div class="section-heading">🛠️ 3. 네이버 마케팅 도구 세팅 진단</div>
+                    <div class="detail-row">
                         <span class="label-text">도구 활성화 :</span>
-                        <span class="desc-text">예약(<span class="highlight-red">{booking_status}</span>), 톡톡(<span class="highlight-red">{talk_status}</span>), 쿠폰(<span class="highlight-red">{coupon_status}</span>), 안심번호(<span class="highlight-red">{call_status}</span>) - 필수 도구 누락 시 알고리즘 가산점 확보가 불가합니다.</span>
+                        <span class="desc-text">예약(<span class="highlight-red">{booking_status}</span>), 톡톡(<span class="highlight-red">{talk_status}</span>), 쿠폰(<span class="highlight-red">{coupon_status}</span>), 안심번호(<span class="highlight-red">{call_status}</span>)</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label-text">도구 누락 문제점 :</span>
+                        <span class="desc-text">{tool_problem}</span>
+                    </div>
+                    <div class="detail-row" style="margin-bottom: 0;">
+                        <span class="label-text">도구 등록 개선점 :</span>
+                        <span class="desc-text">{tool_solution}</span>
                     </div>
                 </div>
 
                 <div class="content-section" style="margin-bottom: 0;">
-                    <div class="section-heading">⚔️ 4. 반경 500M 상권 경쟁 진단</div>
+                    <div class="section-heading">⚔️ 4. 반경 500M 상권 경쟁 및 리뷰 진단</div>
                     <div class="detail-row">
                         <span class="label-text">경쟁 매장 분석 :</span>
                         <span class="desc-text">타겟 상권 반경 500M 내 동종 업계 경쟁 매장은 <span class="highlight-red">약 {random_competitors}개</span>로 밀집도가 매우 높습니다.</span>
                     </div>
                     <div class="detail-row">
-                        <span class="label-text">상권 내 순위 진단 :</span>
-                        <span class="desc-text">{review_evaluation}</span>
+                        <span class="label-text">리뷰 평판 문제점 :</span>
+                        <span class="desc-text">{review_problem}</span>
                     </div>
                     <div class="detail-row" style="margin-bottom: 0;">
-                        <span class="label-text">상권 순위 개선점 :</span>
+                        <span class="label-text">리뷰 평판 개선점 :</span>
                         <span class="desc-text">{review_solution}</span>
                     </div>
                 </div>
@@ -290,4 +311,4 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
         """
         
         # Streamlit 화면에 HTML 렌더링
-        components.html(report_html, height=1180, scrolling=True)
+        components.html(report_html, height=1300, scrolling=True)
