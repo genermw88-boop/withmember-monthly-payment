@@ -70,7 +70,7 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
         coupon_status = "등록" if has_coupon else "미등록"
         call_status = "등록" if has_call else "미등록"
         
-        # 도구 관련 문제점 및 개선점 생성 (체크 상태 반영)
+        # 도구 관련 문제점 및 개선점 생성
         if missing_tools:
             missing_str = ", ".join(missing_tools)
             tool_problem = f"필수 마케팅 도구 중 <span class='highlight-red'>{missing_str}</span> 항목이 누락되어 있어, 네이버 알고리즘 평가에서 가산점을 확보하지 못하고 검색 순위가 하락하는 원인이 됩니다."
