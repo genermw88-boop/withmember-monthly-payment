@@ -53,17 +53,16 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
     else:
         st.success(f"[{store_name}] 전문가용 플레이스 진단 리포트가 생성되었습니다.")
         
-        # 키워드 문자열 정리
-        kw_list = [f"{item['keyword']} (PC:{item['pc']}, 모바일:{item['mo']})" for item in keyword_data]
-        kw_str = ", ".join(kw_list) if kw_list else "등록된 키워드 없음"
+        # 키워드 정보 가공
+        kw_list_str = ", ".join([f"{item['keyword']} (PC:{item['pc']}, 모바일:{item['mo']})" for item in keyword_data]) if keyword_data else "등록된 키워드 없음"
         
-        # 도구 상태 표시 문자열 생성
+        # 도구 상태 문자열 생성
         booking_status = "등록" if has_booking else "미등록"
         talk_status = "등록" if has_talk else "미등록"
         coupon_status = "등록" if has_coupon else "미등록"
         call_status = "등록" if has_call else "미등록"
         
-        # HTML/CSS 전문가용 보고서 디자인 (동일한 폰트 및 간결한 구성 적용)
+        # 새로운 시각적 레이아웃과 스타일 (다크 모던 컨설팅 테마) 적용
         report_html = f"""
         <!DOCTYPE html>
         <html>
@@ -76,80 +75,113 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
                 box-sizing: border-box;
             }}
             .report-container {{
-                background-color: #ffffff;
-                border: 1px solid #cbd5e1;
-                border-radius: 16px;
-                padding: 40px;
-                max-width: 800px;
+                background: linear-gradient(145deg, #0f172a, #1e293b);
+                border: 1px solid #334155;
+                border-radius: 20px;
+                padding: 45px;
+                max-width: 820px;
                 margin: 0 auto;
-                color: #1e293b;
-                box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+                color: #f8fafc;
+                box-shadow: 0 15px 35px rgba(0,0,0,0.3);
             }}
             .report-header {{
                 text-align: center;
-                border-bottom: 2px solid #e2e8f0;
-                padding-bottom: 20px;
-                margin-bottom: 30px;
+                border-bottom: 2px solid #334155;
+                padding-bottom: 25px;
+                margin-bottom: 35px;
             }}
             .report-title {{
-                font-size: 26px;
+                font-size: 30px;
                 font-weight: 800;
-                color: #0f172a;
-                margin-bottom: 6px;
+                color: #38bdf8;
+                margin-bottom: 8px;
+                letter-spacing: -0.5px;
             }}
             .report-subtitle {{
-                font-size: 16px;
-                color: #2563eb;
+                font-size: 18px;
+                color: #e2e8f0;
                 font-weight: 700;
+            }}
+            .card-grid {{
+                display: flex;
+                gap: 15px;
+                margin-bottom: 25px;
+            }}
+            .metric-box {{
+                flex: 1;
+                background-color: rgba(30, 41, 59, 0.7);
+                border: 1px solid #475569;
+                border-radius: 12px;
+                padding: 20px;
+                text-align: center;
+            }}
+            .metric-label {{
+                font-size: 13px;
+                color: #94a3b8;
+                font-weight: 600;
+                margin-bottom: 8px;
+            }}
+            .metric-value {{
+                font-size: 20px;
+                font-weight: 800;
+                color: #f8fafc;
+            }}
+            .metric-value.red {{
+                color: #f87171;
             }}
             .section-box {{
-                background-color: #f8fafc;
-                border-left: 5px solid #2563eb;
-                border-radius: 8px;
-                padding: 20px 22px;
+                background-color: rgba(30, 41, 59, 0.5);
+                border-left: 5px solid #38bdf8;
+                border-radius: 10px;
+                padding: 22px 25px;
                 margin-bottom: 20px;
-                border-top: 1px solid #e2e8f0;
-                border-right: 1px solid #e2e8f0;
-                border-bottom: 1px solid #e2e8f0;
+                border-top: 1px solid #334155;
+                border-right: 1px solid #334155;
+                border-bottom: 1px solid #334155;
             }}
             .section-title {{
-                font-size: 17px;
+                font-size: 18px;
                 font-weight: 700;
-                color: #1e40af;
-                margin-bottom: 12px;
+                color: #38bdf8;
+                margin-bottom: 14px;
             }}
             .row-item {{
                 font-size: 14px;
-                margin-bottom: 8px;
-                line-height: 1.5;
+                margin-bottom: 10px;
+                line-height: 1.6;
+                color: #cbd5e1;
             }}
             .label {{
                 font-weight: 600;
-                color: #334155;
+                color: #f1f5f9;
                 display: inline-block;
                 width: 130px;
             }}
             .value-red {{
-                color: #dc2626;
+                color: #f87171;
+                font-weight: 700;
+            }}
+            .value-green {{
+                color: #4ade80;
                 font-weight: 700;
             }}
             .download-btn {{
                 display: block;
                 width: 100%;
-                background: linear-gradient(135deg, #2563eb, #1d4ed8);
+                background: linear-gradient(135deg, #0ea5e9, #2563eb);
                 color: white;
                 text-align: center;
-                padding: 14px;
-                font-size: 16px;
+                padding: 16px;
+                font-size: 17px;
                 font-weight: bold;
                 border: none;
-                border-radius: 10px;
+                border-radius: 12px;
                 cursor: pointer;
-                margin-top: 30px;
-                box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+                margin-top: 35px;
+                box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);
             }}
             .download-btn:hover {{
-                background: linear-gradient(135deg, #1d4ed8, #1e40af);
+                background: linear-gradient(135deg, #0284c7, #1d4ed8);
             }}
         </style>
         </head>
@@ -157,35 +189,43 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
             <div id="capture-area" class="report-container">
                 <div class="report-header">
                     <div class="report-title">플레이스 진단 리포트</div>
-                    <div class="report-subtitle">{store_name}</div>
+                    <div class="report-subtitle">매장명 : {store_name}</div>
+                </div>
+
+                <div class="card-grid">
+                    <div class="metric-box">
+                        <div class="metric-label">플레이스 점수</div>
+                        <div class="metric-value red">25점 (취약)</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-label">예상 노출 순위</div>
+                        <div class="metric-value red">7~10페이지</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-label">상권 경쟁력</div>
+                        <div class="metric-value red">하위 90%</div>
+                    </div>
                 </div>
 
                 <div class="section-box">
-                    <div class="section-title">1. 현재 점수 및 예상 순위</div>
-                    <div class="row-item"><span class="label">등록 키워드 :</span> {kw_str}</div>
-                    <div class="row-item"><span class="label">플레이스 점수 :</span> <span class="value-red">25점 (취약)</span></div>
-                    <div class="row-item"><span class="label">예상 노출 순위 :</span> <span class="value-red">7~10페이지 (1~2페이지 노출 제외)</span></div>
+                    <div class="section-title">1. 대표키워드 및 검색량 대비 노출 진단</div>
+                    <div class="row-item"><span class="label">현재 등록 키워드 :</span> {kw_str}</div>
+                    <div class="row-item"><span class="label" style="vertical-align: top;">문제점 진단 :</span> <span style="display: inline-block; width: 570px; vertical-align: top;">현재 등록된 대표키워드는 PC 및 모바일 검색량 대비 플레이스 최적화 점수와 알고리즘 매칭이 제대로 이루어지지 않아, 실질적인 고객 유입 구간인 <span class="value-red">1~2페이지 노출에서 완전히 제외</span>되어 7~10페이지권으로 크게 밀려 있습니다.</span></div>
                 </div>
 
                 <div class="section-box">
-                    <div class="section-title">2. 네이버 도구 누락 및 알고리즘 진단</div>
-                    <div class="row-item"><span class="label">현재 세팅 현황 :</span> 예약(<span style="color: {'#dc2626' if booking_status=='미등록' else '#16a34a'}; font-weight: bold;">{booking_status}</span>), 톡톡(<span style="color: {'#dc2626' if talk_status=='미등록' else '#16a34a'}; font-weight: bold;">{talk_status}</span>), 쿠폰(<span style="color: {'#dc2626' if coupon_status=='미등록' else '#16a34a'}; font-weight: bold;">{coupon_status}</span>), 안심번호(<span style="color: {'#dc2626' if call_status=='미등록' else '#16a34a'}; font-weight: bold;">{call_status}</span>)</div>
-                    <div class="row-item"><span class="label" style="vertical-align: top;">알고리즘 진단 :</span> <span style="display: inline-block; width: 570px; vertical-align: top;">필수 마케팅 도구 미등록으로 알고리즘 가산점을 확보하지 못해 순위 경쟁에서 심각하게 밀리고 있습니다.</span></div>
+                    <div class="section-title">2. 키워드 최적화 (5,000~10,000건) 개선 효과</div>
+                    <div class="row-item"><span class="label" style="vertical-align: top;">타겟 변경 효과 :</span> <span style="display: inline-block; width: 570px; vertical-align: top;">매월 꾸준한 PC/모바일 검색량 조사를 기반으로 <span class="value-green">월 검색량 5,000~10,000건 규모의 고효율 핵심 대표키워드로 전면 수정</span>할 경우, 상권 내 유효 트래픽을 즉각 흡수하여 검색 상위 노출 순위가 빠르게 반등하고 예약 및 매출 전환율이 극대화됩니다.</span></div>
                 </div>
 
                 <div class="section-box">
-                    <div class="section-title">3. 도구 최적화 시 기대효과</div>
-                    <div class="row-item"><span class="label" style="vertical-align: top;">순위 회복 효과 :</span> <span style="display: inline-block; width: 570px; vertical-align: top;">누락된 도구들을 즉시 등록하여 알고리즘 가산점을 확보하면, 검색 노출 순위가 빠르게 회복되고 고객 유입이 크게 상승합니다.</span></div>
-                </div>
-
-                <div class="section-box" style="margin-bottom: 0;">
-                    <div class="section-title">4. 반경 500M 상권 경쟁 진단</div>
-                    <div class="row-item"><span class="label">경쟁 매장 :</span> <span class="value-red">약 35개</span> (상권 추정)</div>
-                    <div class="row-item"><span class="label" style="vertical-align: top;">상권 내 순위 진단 :</span> <span style="display: inline-block; width: 570px; vertical-align: top;">경쟁 매장 대비 현재 리뷰 평판(방문자 {visitor_reviews}개, 블로그 {blog_reviews}개)이 상권 평균 이하로 낮아 즉각적인 개선이 필요합니다.</span></div>
+                    <div class="section-title">3. 네이버 마케팅 도구 및 상권 경쟁 진단</div>
+                    <div class="row-item"><span class="label">도구 세팅 현황 :</span> 예약(<span class="value-{ 'green' if booking_status=='등록' else 'red'}">{booking_status}</span>), 톡톡(<span class="value-{ 'green' if talk_status=='등록' else 'red'}">{talk_status}</span>), 쿠폰(<span class="value-{ 'green' if coupon_status=='등록' else 'red'}">{coupon_status}</span>), 안심번호(<span class="value-{ 'green' if call_status=='등록' else 'red'}">{call_status}</span>)</div>
+                    <div class="row-item"><span class="label" style="vertical-align: top;">상권 경쟁 진단 :</span> <span style="display: inline-block; width: 570px; vertical-align: top;">인근 500M 내 약 35개 경쟁 매장 대비 현재 방문자({visitor_reviews}개) 및 블로그({blog_reviews}개) 리뷰 평판이 평균 이하이므로, 누락된 도구 활성화와 키워드 재설정이 시급합니다.</span></div>
                 </div>
             </div>
 
-            <button class="download-btn" onclick="downloadImage()">📥 진단 리포트 이미지 저장하기</button>
+            <button class="download-btn" onclick="downloadImage()">📥 프리미엄 진단 리포트 이미지 저장하기</button>
 
             <script>
             function downloadImage() {{
@@ -203,4 +243,4 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
         """
         
         # Streamlit 화면에 HTML 렌더링
-        components.html(report_html, height=880, scrolling=True)
+        components.html(report_html, height=920, scrolling=True)
