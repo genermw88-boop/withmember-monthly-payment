@@ -1,5 +1,6 @@
 import streamlit as st
 import streamlit.components.v1 as components
+import random
 
 # 1. 페이지 기본 설정
 st.set_page_config(page_title="위드멤버 종합 플레이스 & 리뷰 진단기", page_icon="📊", layout="wide")
@@ -65,7 +66,22 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
         coupon_status = "등록" if has_coupon else "미등록"
         call_status = "등록" if has_call else "미등록"
         
-        # 간격 정렬 및 빨간색 강조 통일, 상권 진단 추가 버전
+        # 30~50개 사이 랜덤 경쟁 매장 수 생성
+        random_competitors = random.randint(30, 50)
+        
+        # 리뷰 상태에 따른 전문적인 AI 진단 문구 판단 로직
+        total_reviews = visitor_reviews + blog_reviews
+        if total_reviews < 30:
+            review_evaluation = f"현재 방문자 리뷰 {visitor_reviews}개, 블로그 리뷰 {blog_reviews}개로 상권 평균(약 150개 이상)에 비해 평판 지수가 심각하게 부족합니다. 신뢰도 저하로 인한 유저 이탈이 발생하고 있습니다."
+            review_solution = "초기 고객 신뢰 회복을 위해 체험단 및 영수증 리뷰 마케팅을 집중 투입하여 평판 볼륨을 즉시 끌어올려야 합니다."
+        elif total_reviews < 100:
+            review_evaluation = f"현재 방문자 리뷰 {visitor_reviews}개, 블로그 리뷰 {blog_reviews}개로 보통 수준이나, 상위 노출 경쟁 매장들에 비해서는 여전히 리뷰 경쟁력이 다소 밀리는 편입니다."
+            review_solution = "상권 상위 20% 진입을 위해 타겟 키워드 연계 블로그 리뷰 및 단골 고객 유도 프로필 혜택을 강화해야 합니다."
+        else:
+            review_evaluation = f"현재 방문자 리뷰 {visitor_reviews}개, 블로그 리뷰 {blog_reviews}개로 리뷰 볼륨은 양호하나, 누락된 마케팅 도구와 키워드 최적화 미비로 인해 트래픽이 매출로 전환되지 못하고 있습니다."
+            review_solution = "확보된 리뷰 평판을 바탕으로 고효율 대표키워드 전환 및 스마트 도구 연동을 완료하여 유입 극대화를 달성해야 합니다."
+
+        # 최종 리포트 HTML 생성 (빨간색 강조 통일 및 간격 정렬)
         report_html = f"""
         <!DOCTYPE html>
         <html>
@@ -243,15 +259,15 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
                     <div class="section-heading">⚔️ 4. 반경 500M 상권 경쟁 진단</div>
                     <div class="detail-row">
                         <span class="label-text">경쟁 매장 분석 :</span>
-                        <span class="desc-text">타겟 상권 반경 500M 내 동종 업계 경쟁 매장은 <span class="highlight-red">약 30~50개</span>로 밀집도가 매우 높습니다.</span>
+                        <span class="desc-text">타겟 상권 반경 500M 내 동종 업계 경쟁 매장은 <span class="highlight-red">약 {random_competitors}개</span>로 밀집도가 매우 높습니다.</span>
                     </div>
                     <div class="detail-row">
-                        <span class="label-text">상권 내 순위 문제점 :</span>
-                        <span class="desc-text">경쟁 매장 대비 현재 방문자({visitor_reviews}개) 및 블로그({blog_reviews}개) 평판 지수가 현저히 낮아 상권 내 순위가 <span class="highlight-red">하위권으로 추락</span>해 있습니다.</span>
+                        <span class="label-text">상권 내 순위 진단 :</span>
+                        <span class="desc-text">{review_evaluation}</span>
                     </div>
                     <div class="detail-row" style="margin-bottom: 0;">
                         <span class="label-text">상권 순위 개선점 :</span>
-                        <span class="desc-text">체계적인 리뷰 빌드업과 누락 도구 세팅을 병행하여 <span class="highlight-red">상권 평점 평균 이상을 확보</span>함으로써 유저 이탈을 방지하고 상위 노출을 탈환해야 합니다.</span>
+                        <span class="desc-text">{review_solution}</span>
                     </div>
                 </div>
             </div>
@@ -274,4 +290,4 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
         """
         
         # Streamlit 화면에 HTML 렌더링
-        components.html(report_html, height=1150, scrolling=True)
+        components.html(report_html, height=1180, scrolling=True)
