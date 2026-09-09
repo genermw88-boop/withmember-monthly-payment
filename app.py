@@ -13,7 +13,7 @@ st.subheader("📋 1. 매장 종합 정보")
 # 매장 정보 입력 폼
 col1, col2 = st.columns(2)
 with col1:
-    store_name = st.text_input("매장명 (플레이스 등록 이름)", placeholder="예: ㅠㅜ")
+    store_name = st.text_input("매장명 (플레이스 등록 이름)", placeholder="예: 강남술집")
     target_region = st.text_input("타겟 지역명", placeholder="예: 강남역")
 with col2:
     core_menu = st.text_input("핵심 메뉴/업종", placeholder="예: 이자카야")
@@ -53,7 +53,7 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
     else:
         st.success(f"[{store_name}] 전문가용 플레이스 진단 리포트가 생성되었습니다.")
         
-        # 키워드 정보 가공 (NameError 방지를 위해 사전에 명확히 문자열로 생성)
+        # 키워드 정보 가공
         if keyword_data:
             kw_list_str = ", ".join([f"{item['keyword']} (PC:{item['pc']}, 모바일:{item['mo']})" for item in keyword_data])
         else:
@@ -65,7 +65,7 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
         coupon_status = "등록" if has_coupon else "미등록"
         call_status = "등록" if has_call else "미등록"
         
-        # 완전히 새롭게 디자인된 프리미엄 라이트 테마 컨설팅 보고서 레이아웃 (세련된 카드 그리드 및 분석 스타일)
+        # 간격 정렬 및 빨간색 강조 통일, 상권 진단 추가 버전
         report_html = f"""
         <!DOCTYPE html>
         <html>
@@ -131,45 +131,42 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
             .card-val {{
                 font-size: 18px;
                 font-weight: 800;
-                color: #0f172a;
-            }}
-            .card-val.alert {{
                 color: #dc2626;
             }}
             .content-section {{
                 background-color: #f8fafc;
                 border-radius: 12px;
                 border: 1px solid #e2e8f0;
-                padding: 22px;
+                padding: 24px;
                 margin-bottom: 20px;
             }}
             .section-heading {{
                 font-size: 16px;
                 font-weight: 700;
                 color: #0284c7;
-                margin-bottom: 12px;
+                margin-bottom: 14px;
                 display: flex;
                 align-items: center;
                 gap: 8px;
             }}
             .detail-row {{
                 font-size: 14px;
-                margin-bottom: 8px;
-                line-height: 1.6;
+                margin-bottom: 12px;
+                line-height: 1.7;
                 color: #334155;
+                display: flex;
             }}
             .label-text {{
-                font-weight: 600;
+                font-weight: 700;
                 color: #1e293b;
-                display: inline-block;
-                width: 130px;
+                min-width: 130px;
+                flex-shrink: 0;
+            }}
+            .desc-text {{
+                flex-grow: 1;
             }}
             .highlight-red {{
                 color: #dc2626;
-                font-weight: 700;
-            }}
-            .highlight-blue {{
-                color: #0284c7;
                 font-weight: 700;
             }}
             .download-btn {{
@@ -202,33 +199,60 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
                 <div class="summary-cards">
                     <div class="card">
                         <div class="card-title">플레이스 종합 점수</div>
-                        <div class="card-val alert">25점 (취약)</div>
+                        <div class="card-val">25점 (취약)</div>
                     </div>
                     <div class="card">
                         <div class="card-title">예상 노출 순위</div>
-                        <div class="card-val alert">7~10페이지</div>
+                        <div class="card-val">7~10페이지</div>
                     </div>
                     <div class="card">
                         <div class="card-title">상권 경쟁 지수</div>
-                        <div class="card-val alert">하위 90%</div>
+                        <div class="card-val">하위 90%</div>
                     </div>
                 </div>
 
                 <div class="content-section">
                     <div class="section-heading">🔍 1. 키워드 검색량 대비 노출 진단</div>
-                    <div class="detail-row"><span class="label-text">현재 등록 키워드 :</span> {kw_list_str}</div>
-                    <div class="detail-row"><span class="label-text" style="vertical-align: top;">문제점 분석 :</span> <span style="display: inline-block; width: 580px; vertical-align: top;">현재 등록된 대표키워드는 PC 및 모바일 검색량 대비 플레이스 최적화 알고리즘 매칭 점수가 턱없이 부족하여, 실질적인 고객 유입이 발생하는 <span class="highlight-red">1~2페이지 상위 노출 구간에서 완전히 제외</span>된 상태입니다.</span></div>
+                    <div class="detail-row">
+                        <span class="label-text">현재 등록 키워드 :</span>
+                        <span class="desc-text">{kw_list_str}</span>
+                    </div>
+                    <div class="detail-row" style="margin-bottom: 0;">
+                        <span class="label-text">문제점 분석 :</span>
+                        <span class="desc-text">현재 등록된 대표키워드는 PC 및 모바일 검색량 대비 플레이스 최적화 알고리즘 매칭 점수가 턱없이 부족하여, 실질적인 고객 유입이 발생하는 <span class="highlight-red">1~2페이지 상위 노출 구간에서 완전히 제외</span>된 상태입니다.</span>
+                    </div>
                 </div>
 
                 <div class="content-section">
                     <div class="section-heading">💡 2. 5,000~10,000건 키워드 최적화 개선점</div>
-                    <div class="detail-row"><span class="label-text" style="vertical-align: top;">개선 기대효과 :</span> <span style="display: inline-block; width: 580px; vertical-align: top;">매월 주기적인 PC·모바일 검색량 조사를 기반으로 <span class="highlight-blue">월 검색량 5,000~10,000건 규모의 고효율 핵심 대표키워드로 재설정</span>할 경우, 상권 내 유효 트래픽을 빠르게 독점하여 검색 노출 순위가 1~2페이지로 급상승하며 예약 및 매출로 즉각 이어집니다.</span></div>
+                    <div class="detail-row" style="margin-bottom: 0;">
+                        <span class="label-text">개선 기대효과 :</span>
+                        <span class="desc-text">매월 주기적인 PC·모바일 검색량 조사를 기반으로 <span class="highlight-red">월 검색량 5,000~10,000건 규모의 고효율 핵심 대표키워드로 재설정</span>할 경우, 상권 내 유효 트래픽을 빠르게 독점하여 검색 노출 순위가 1~2페이지로 급상승하며 예약 및 매출로 즉각 이어집니다.</span>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-heading">🛠️ 3. 네이버 마케팅 도구 세팅 현황</div>
+                    <div class="detail-row" style="margin-bottom: 0;">
+                        <span class="label-text">도구 활성화 :</span>
+                        <span class="desc-text">예약(<span class="highlight-red">{booking_status}</span>), 톡톡(<span class="highlight-red">{talk_status}</span>), 쿠폰(<span class="highlight-red">{coupon_status}</span>), 안심번호(<span class="highlight-red">{call_status}</span>) - 필수 도구 누락 시 알고리즘 가산점 확보가 불가합니다.</span>
+                    </div>
                 </div>
 
                 <div class="content-section" style="margin-bottom: 0;">
-                    <div class="section-heading">🛠️ 3. 네이버 마케팅 도구 및 상권 경쟁력</div>
-                    <div class="detail-row"><span class="label-text">도구 세팅 현황 :</span> 예약(<span class="highlight-{ 'blue' if booking_status=='등록' else 'red'}">{booking_status}</span>), 톡톡(<span class="highlight-{ 'blue' if talk_status=='등록' else 'red'}">{talk_status}</span>), 쿠폰(<span class="highlight-{ 'blue' if coupon_status=='등록' else 'red'}">{coupon_status}</span>), 안심번호(<span class="highlight-{ 'blue' if call_status=='등록' else 'red'}">{call_status}</span>)</div>
-                    <div class="detail-row"><span class="label-text" style="vertical-align: top;">상권 경쟁 진단 :</span> <span style="display: inline-block; width: 580px; vertical-align: top;">반경 500M 내 약 35개 경쟁 매장 대비 현재 방문자({visitor_reviews}개) 및 블로그({blog_reviews}개) 평판 지수가 낮아 즉각적인 마케팅 보완이 시급합니다.</span></div>
+                    <div class="section-heading">⚔️ 4. 반경 500M 상권 경쟁 진단</div>
+                    <div class="detail-row">
+                        <span class="label-text">경쟁 매장 분석 :</span>
+                        <span class="desc-text">타겟 상권 반경 500M 내 동종 업계 경쟁 매장은 <span class="highlight-red">약 30~50개</span>로 밀집도가 매우 높습니다.</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label-text">상권 내 순위 문제점 :</span>
+                        <span class="desc-text">경쟁 매장 대비 현재 방문자({visitor_reviews}개) 및 블로그({blog_reviews}개) 평판 지수가 현저히 낮아 상권 내 순위가 <span class="highlight-red">하위권으로 추락</span>해 있습니다.</span>
+                    </div>
+                    <div class="detail-row" style="margin-bottom: 0;">
+                        <span class="label-text">상권 순위 개선점 :</span>
+                        <span class="desc-text">체계적인 리뷰 빌드업과 누락 도구 세팅을 병행하여 <span class="highlight-red">상권 평점 평균 이상을 확보</span>함으로써 유저 이탈을 방지하고 상위 노출을 탈환해야 합니다.</span>
+                    </div>
                 </div>
             </div>
 
@@ -250,4 +274,4 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
         """
         
         # Streamlit 화면에 HTML 렌더링
-        components.html(report_html, height=920, scrolling=True)
+        components.html(report_html, height=1150, scrolling=True)
