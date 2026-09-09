@@ -13,7 +13,7 @@ st.subheader("📋 1. 매장 종합 정보")
 # 매장 정보 입력 폼
 col1, col2 = st.columns(2)
 with col1:
-    store_name = st.text_input("매장명 (플레이스 등록 이름)", placeholder="예: 강남술집")
+    store_name = st.text_input("매장명 (플레이스 등록 이름)", placeholder="예: ㅠㅜ")
     target_region = st.text_input("타겟 지역명", placeholder="예: 강남역")
 with col2:
     core_menu = st.text_input("핵심 메뉴/업종", placeholder="예: 이자카야")
@@ -53,16 +53,19 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
     else:
         st.success(f"[{store_name}] 전문가용 플레이스 진단 리포트가 생성되었습니다.")
         
-        # 키워드 정보 가공
-        kw_list_str = ", ".join([f"{item['keyword']} (PC:{item['pc']}, 모바일:{item['mo']})" for item in keyword_data]) if keyword_data else "등록된 키워드 없음"
+        # 키워드 정보 가공 (NameError 방지를 위해 사전에 명확히 문자열로 생성)
+        if keyword_data:
+            kw_list_str = ", ".join([f"{item['keyword']} (PC:{item['pc']}, 모바일:{item['mo']})" for item in keyword_data])
+        else:
+            kw_list_str = "등록된 키워드 없음"
         
-        # 도구 상태 문자열 생성
+        # 도구 상태 표시 문자열 생성
         booking_status = "등록" if has_booking else "미등록"
         talk_status = "등록" if has_talk else "미등록"
         coupon_status = "등록" if has_coupon else "미등록"
         call_status = "등록" if has_call else "미등록"
         
-        # 새로운 시각적 레이아웃과 스타일 (다크 모던 컨설팅 테마) 적용
+        # 완전히 새롭게 디자인된 프리미엄 라이트 테마 컨설팅 보고서 레이아웃 (세련된 카드 그리드 및 분석 스타일)
         report_html = f"""
         <!DOCTYPE html>
         <html>
@@ -75,153 +78,157 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
                 box-sizing: border-box;
             }}
             .report-container {{
-                background: linear-gradient(145deg, #0f172a, #1e293b);
-                border: 1px solid #334155;
+                background-color: #ffffff;
+                border: 2px solid #e2e8f0;
                 border-radius: 20px;
-                padding: 45px;
+                padding: 40px;
                 max-width: 820px;
                 margin: 0 auto;
-                color: #f8fafc;
-                box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+                color: #0f172a;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             }}
             .report-header {{
-                text-align: center;
-                border-bottom: 2px solid #334155;
-                padding-bottom: 25px;
-                margin-bottom: 35px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 3px solid #0284c7;
+                padding-bottom: 20px;
+                margin-bottom: 30px;
             }}
             .report-title {{
-                font-size: 30px;
+                font-size: 26px;
                 font-weight: 800;
-                color: #38bdf8;
-                margin-bottom: 8px;
-                letter-spacing: -0.5px;
+                color: #0284c7;
             }}
-            .report-subtitle {{
-                font-size: 18px;
-                color: #e2e8f0;
+            .store-badge {{
+                background-color: #f0f9ff;
+                border: 1px solid #bae6fd;
+                padding: 8px 16px;
+                border-radius: 20px;
+                font-size: 15px;
                 font-weight: 700;
+                color: #0369a1;
             }}
-            .card-grid {{
+            .summary-cards {{
                 display: flex;
                 gap: 15px;
-                margin-bottom: 25px;
+                margin-bottom: 30px;
             }}
-            .metric-box {{
+            .card {{
                 flex: 1;
-                background-color: rgba(30, 41, 59, 0.7);
-                border: 1px solid #475569;
+                background-color: #f8fafc;
+                border: 1px solid #cbd5e1;
                 border-radius: 12px;
-                padding: 20px;
+                padding: 18px;
                 text-align: center;
             }}
-            .metric-label {{
+            .card-title {{
                 font-size: 13px;
-                color: #94a3b8;
+                color: #64748b;
                 font-weight: 600;
-                margin-bottom: 8px;
+                margin-bottom: 6px;
             }}
-            .metric-value {{
-                font-size: 20px;
-                font-weight: 800;
-                color: #f8fafc;
-            }}
-            .metric-value.red {{
-                color: #f87171;
-            }}
-            .section-box {{
-                background-color: rgba(30, 41, 59, 0.5);
-                border-left: 5px solid #38bdf8;
-                border-radius: 10px;
-                padding: 22px 25px;
-                margin-bottom: 20px;
-                border-top: 1px solid #334155;
-                border-right: 1px solid #334155;
-                border-bottom: 1px solid #334155;
-            }}
-            .section-title {{
+            .card-val {{
                 font-size: 18px;
+                font-weight: 800;
+                color: #0f172a;
+            }}
+            .card-val.alert {{
+                color: #dc2626;
+            }}
+            .content-section {{
+                background-color: #f8fafc;
+                border-radius: 12px;
+                border: 1px solid #e2e8f0;
+                padding: 22px;
+                margin-bottom: 20px;
+            }}
+            .section-heading {{
+                font-size: 16px;
                 font-weight: 700;
-                color: #38bdf8;
-                margin-bottom: 14px;
+                color: #0284c7;
+                margin-bottom: 12px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
             }}
-            .row-item {{
+            .detail-row {{
                 font-size: 14px;
-                margin-bottom: 10px;
+                margin-bottom: 8px;
                 line-height: 1.6;
-                color: #cbd5e1;
+                color: #334155;
             }}
-            .label {{
+            .label-text {{
                 font-weight: 600;
-                color: #f1f5f9;
+                color: #1e293b;
                 display: inline-block;
                 width: 130px;
             }}
-            .value-red {{
-                color: #f87171;
+            .highlight-red {{
+                color: #dc2626;
                 font-weight: 700;
             }}
-            .value-green {{
-                color: #4ade80;
+            .highlight-blue {{
+                color: #0284c7;
                 font-weight: 700;
             }}
             .download-btn {{
                 display: block;
                 width: 100%;
-                background: linear-gradient(135deg, #0ea5e9, #2563eb);
+                background: linear-gradient(135deg, #0284c7, #0369a1);
                 color: white;
                 text-align: center;
-                padding: 16px;
-                font-size: 17px;
+                padding: 15px;
+                font-size: 16px;
                 font-weight: bold;
                 border: none;
                 border-radius: 12px;
                 cursor: pointer;
-                margin-top: 35px;
-                box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);
+                margin-top: 30px;
+                box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
             }}
             .download-btn:hover {{
-                background: linear-gradient(135deg, #0284c7, #1d4ed8);
+                background: linear-gradient(135deg, #0369a1, #075985);
             }}
         </style>
         </head>
         <body>
             <div id="capture-area" class="report-container">
                 <div class="report-header">
-                    <div class="report-title">플레이스 진단 리포트</div>
-                    <div class="report-subtitle">매장명 : {store_name}</div>
+                    <div class="report-title">📈 플레이스 진단 리포트</div>
+                    <div class="store-badge">매장명 : {store_name}</div>
                 </div>
 
-                <div class="card-grid">
-                    <div class="metric-box">
-                        <div class="metric-label">플레이스 점수</div>
-                        <div class="metric-value red">25점 (취약)</div>
+                <div class="summary-cards">
+                    <div class="card">
+                        <div class="card-title">플레이스 종합 점수</div>
+                        <div class="card-val alert">25점 (취약)</div>
                     </div>
-                    <div class="metric-box">
-                        <div class="metric-label">예상 노출 순위</div>
-                        <div class="metric-value red">7~10페이지</div>
+                    <div class="card">
+                        <div class="card-title">예상 노출 순위</div>
+                        <div class="card-val alert">7~10페이지</div>
                     </div>
-                    <div class="metric-box">
-                        <div class="metric-label">상권 경쟁력</div>
-                        <div class="metric-value red">하위 90%</div>
+                    <div class="card">
+                        <div class="card-title">상권 경쟁 지수</div>
+                        <div class="card-val alert">하위 90%</div>
                     </div>
                 </div>
 
-                <div class="section-box">
-                    <div class="section-title">1. 대표키워드 및 검색량 대비 노출 진단</div>
-                    <div class="row-item"><span class="label">현재 등록 키워드 :</span> {kw_str}</div>
-                    <div class="row-item"><span class="label" style="vertical-align: top;">문제점 진단 :</span> <span style="display: inline-block; width: 570px; vertical-align: top;">현재 등록된 대표키워드는 PC 및 모바일 검색량 대비 플레이스 최적화 점수와 알고리즘 매칭이 제대로 이루어지지 않아, 실질적인 고객 유입 구간인 <span class="value-red">1~2페이지 노출에서 완전히 제외</span>되어 7~10페이지권으로 크게 밀려 있습니다.</span></div>
+                <div class="content-section">
+                    <div class="section-heading">🔍 1. 키워드 검색량 대비 노출 진단</div>
+                    <div class="detail-row"><span class="label-text">현재 등록 키워드 :</span> {kw_list_str}</div>
+                    <div class="detail-row"><span class="label-text" style="vertical-align: top;">문제점 분석 :</span> <span style="display: inline-block; width: 580px; vertical-align: top;">현재 등록된 대표키워드는 PC 및 모바일 검색량 대비 플레이스 최적화 알고리즘 매칭 점수가 턱없이 부족하여, 실질적인 고객 유입이 발생하는 <span class="highlight-red">1~2페이지 상위 노출 구간에서 완전히 제외</span>된 상태입니다.</span></div>
                 </div>
 
-                <div class="section-box">
-                    <div class="section-title">2. 키워드 최적화 (5,000~10,000건) 개선 효과</div>
-                    <div class="row-item"><span class="label" style="vertical-align: top;">타겟 변경 효과 :</span> <span style="display: inline-block; width: 570px; vertical-align: top;">매월 꾸준한 PC/모바일 검색량 조사를 기반으로 <span class="value-green">월 검색량 5,000~10,000건 규모의 고효율 핵심 대표키워드로 전면 수정</span>할 경우, 상권 내 유효 트래픽을 즉각 흡수하여 검색 상위 노출 순위가 빠르게 반등하고 예약 및 매출 전환율이 극대화됩니다.</span></div>
+                <div class="content-section">
+                    <div class="section-heading">💡 2. 5,000~10,000건 키워드 최적화 개선점</div>
+                    <div class="detail-row"><span class="label-text" style="vertical-align: top;">개선 기대효과 :</span> <span style="display: inline-block; width: 580px; vertical-align: top;">매월 주기적인 PC·모바일 검색량 조사를 기반으로 <span class="highlight-blue">월 검색량 5,000~10,000건 규모의 고효율 핵심 대표키워드로 재설정</span>할 경우, 상권 내 유효 트래픽을 빠르게 독점하여 검색 노출 순위가 1~2페이지로 급상승하며 예약 및 매출로 즉각 이어집니다.</span></div>
                 </div>
 
-                <div class="section-box">
-                    <div class="section-title">3. 네이버 마케팅 도구 및 상권 경쟁 진단</div>
-                    <div class="row-item"><span class="label">도구 세팅 현황 :</span> 예약(<span class="value-{ 'green' if booking_status=='등록' else 'red'}">{booking_status}</span>), 톡톡(<span class="value-{ 'green' if talk_status=='등록' else 'red'}">{talk_status}</span>), 쿠폰(<span class="value-{ 'green' if coupon_status=='등록' else 'red'}">{coupon_status}</span>), 안심번호(<span class="value-{ 'green' if call_status=='등록' else 'red'}">{call_status}</span>)</div>
-                    <div class="row-item"><span class="label" style="vertical-align: top;">상권 경쟁 진단 :</span> <span style="display: inline-block; width: 570px; vertical-align: top;">인근 500M 내 약 35개 경쟁 매장 대비 현재 방문자({visitor_reviews}개) 및 블로그({blog_reviews}개) 리뷰 평판이 평균 이하이므로, 누락된 도구 활성화와 키워드 재설정이 시급합니다.</span></div>
+                <div class="content-section" style="margin-bottom: 0;">
+                    <div class="section-heading">🛠️ 3. 네이버 마케팅 도구 및 상권 경쟁력</div>
+                    <div class="detail-row"><span class="label-text">도구 세팅 현황 :</span> 예약(<span class="highlight-{ 'blue' if booking_status=='등록' else 'red'}">{booking_status}</span>), 톡톡(<span class="highlight-{ 'blue' if talk_status=='등록' else 'red'}">{talk_status}</span>), 쿠폰(<span class="highlight-{ 'blue' if coupon_status=='등록' else 'red'}">{coupon_status}</span>), 안심번호(<span class="highlight-{ 'blue' if call_status=='등록' else 'red'}">{call_status}</span>)</div>
+                    <div class="detail-row"><span class="label-text" style="vertical-align: top;">상권 경쟁 진단 :</span> <span style="display: inline-block; width: 580px; vertical-align: top;">반경 500M 내 약 35개 경쟁 매장 대비 현재 방문자({visitor_reviews}개) 및 블로그({blog_reviews}개) 평판 지수가 낮아 즉각적인 마케팅 보완이 시급합니다.</span></div>
                 </div>
             </div>
 
