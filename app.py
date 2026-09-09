@@ -3,10 +3,10 @@ import streamlit.components.v1 as components
 import random
 
 # 1. 페이지 기본 설정
-st.set_page_config(page_title="위드멤버 종합 플레이스 & 리뷰 진단기", page_icon="📊", layout="wide")
+st.set_page_config(page_title="위드멤버 종합 플레이스 & 리뷰 진단 및 솔루션 제안서", page_icon="📊", layout="wide")
 
-st.title("📊 위드멤버 종합 플레이스 & 리뷰 진단기")
-st.write("네이버 플레이스 도구 누락 현상과 리뷰 평판 및 매출 성장을 한 번에 정밀 진단합니다.")
+st.title("📊 위드멤버 종합 플레이스 & 리뷰 진단 및 솔루션 제안서")
+st.write("네이버 플레이스 도구 진단부터 최적화 관리 및 3개월 마케팅 솔루션 제안까지 한 번에 확인하세요.")
 
 st.markdown("---")
 st.subheader("📋 1. 매장 종합 정보")
@@ -48,11 +48,11 @@ has_call = col_t4.checkbox("안심번호(스마트콜)", value=False)
 st.markdown("---")
 
 # 진단 실행 버튼
-if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
+if st.button("🚀 종합 정밀 진단 및 솔루션 제안서 생성"):
     if not store_name:
         st.warning("매장명을 입력해주세요.")
     else:
-        st.success(f"[{store_name}] 전문가용 플레이스 진단 리포트가 생성되었습니다.")
+        st.success(f"[{store_name}] 1, 2차 프리미엄 진단 및 솔루션 제안서가 생성되었습니다.")
         
         # 키워드 정보 가공 및 문제점 분기
         if keyword_data:
@@ -128,13 +128,19 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
             visitor_problem = f"입력하신 방문자 리뷰가 총 <span class='highlight-red'>{visitor_reviews}개</span>로 양호하나, 최신 리뷰 갱신 주기나 세부 키워드 매칭 관리가 다소 미흡합니다."
             visitor_solution = "주기적인 피드백 관리와 핵심 키워드가 자연스럽게 녹아든 양질의 방문자 리뷰를 지속적으로 누적해야 합니다."
 
-        # 최종 리포트 HTML 생성
+        # 2차 제안서용 상승 점수 및 매출액 랜덤 생성
+        expected_score_increase = random.randint(65, 85)
+        projected_sales = random.randint(15000000, 20000000)
+        projected_sales_formatted = f"{projected_sales / 10000:,.0f}만원"
+
+        # 최종 통합 리포트 HTML 생성 (1차 + 2차 제안서)
         report_html = f"""
         <!DOCTYPE html>
         <html>
         <head>
         <meta charset="utf-8">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <style>
             * {{
                 font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', '맑은 고딕', sans-serif;
@@ -236,6 +242,10 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
                 color: #16a34a;
                 font-weight: 700;
             }}
+            .highlight-blue {{
+                color: #0284c7;
+                font-weight: 700;
+            }}
             .download-btn {{
                 display: block;
                 width: 100%;
@@ -254,12 +264,73 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
             .download-btn:hover {{
                 background: linear-gradient(135deg, #0369a1, #075985);
             }}
+            .divider {{
+                margin: 50px 0;
+                border-top: 3px dashed #cbd5e1;
+            }}
+            /* 2차 제안서 전용 스타일 */
+            .banner-box {{
+                background-color: #fffbeb;
+                border: 1px solid #fde68a;
+                border-radius: 12px;
+                padding: 20px;
+                margin-bottom: 25px;
+            }}
+            .banner-title {{
+                color: #b45309;
+                font-weight: 700;
+                font-size: 15px;
+                margin-bottom: 10px;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }}
+            .pill-container {{
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+                margin-top: 10px;
+            }}
+            .pill {{
+                background-color: #ffffff;
+                border: 1px solid #fcd34d;
+                padding: 6px 14px;
+                border-radius: 20px;
+                font-size: 13px;
+                font-weight: 600;
+                color: #92400e;
+            }}
+            .solution-box {{
+                background-color: #f0f9ff;
+                border: 1px solid #bae6fd;
+                border-radius: 12px;
+                padding: 20px;
+                margin-bottom: 25px;
+            }}
+            .solution-title {{
+                color: #0369a1;
+                font-weight: 700;
+                font-size: 16px;
+                text-align: center;
+                margin-bottom: 15px;
+            }}
+            .solution-item {{
+                background-color: #ffffff;
+                border: 1px solid #e0f2fe;
+                border-radius: 8px;
+                padding: 12px 16px;
+                margin-bottom: 8px;
+                font-size: 14px;
+                font-weight: 600;
+                color: #0369a1;
+            }}
         </style>
         </head>
         <body>
             <div id="capture-area" class="report-container">
+                <!-- 1차 리포트 영역 -->
                 <div class="report-header">
-                    <div class="report-title">📈 플레이스 진단 리포트</div>
+                    <div class="report-title">📈 플레이스 진단 리포트 (1/2)</div>
                     <div class="store-badge">매장명 : {store_name}</div>
                 </div>
 
@@ -357,16 +428,119 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
                         <span class="desc-text">{visitor_solution}</span>
                     </div>
                 </div>
+
+                <!-- 구분선 -->
+                <div class="divider"></div>
+
+                <!-- 2차 리포트 영역 -->
+                <div class="report-header" style="border-bottom-color: #0369a1;">
+                    <div class="report-title" style="color: #0369a1;">📑 맞춤형 평판 진단 제안서 (2/2)</div>
+                    <div class="store-badge">대상 매장: {store_name}</div>
+                </div>
+
+                <div class="banner-box">
+                    <div class="banner-title">📌 네이버 플레이스 상위 노출 핵심 지표</div>
+                    <div style="font-size: 13px; color: #78350f; margin-bottom: 8px;">상위 노출은 다음 4가지 지표로 결정되며, 체계적인 관리가 필수입니다.</div>
+                    <div class="pill-container">
+                        <div class="pill">① 리뷰 활성도</div>
+                        <div class="pill">② 키워드 적합도</div>
+                        <div class="pill">③ 최신성 지수</div>
+                        <div class="pill">④ 체류 시간</div>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-heading">🛠️ 플레이스 최적화 관리 항목</div>
+                    <div style="font-size: 13px; color: #475569; margin-bottom: 12px;">즉시 적용해야 할 핵심 플레이스 관리 리스트입니다.</div>
+                    <ul style="margin: 0; padding-left: 20px; font-size: 14px; line-height: 1.8; color: #334155;">
+                        <li>플레이스 메인키워드 수정</li>
+                        <li>네이버 예약 연동 및 세팅</li>
+                        <li>네이버 톡톡 응대 배너 적용</li>
+                        <li>안심번호 등록 및 세팅</li>
+                        <li>네이버 쿠폰 등록 및 세팅</li>
+                        <li>플레이스 새소식 업데이트</li>
+                    </ul>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-heading">🚀 솔루션 적용 후 기대 효과</div>
+                    <div class="detail-row">
+                        <span class="label-text">종합 진단 점수 :</span>
+                        <span class="desc-text">현재 <span class="highlight-red">{random_score}점</span> ➔ 솔루션 적용 후 <span class="highlight-blue">{min(100, random_score + expected_score_increase)}점 (대폭 상승)</span></span>
+                    </div>
+                    <div class="detail-row" style="margin-bottom: 0;">
+                        <span class="label-text">핵심 솔루션 시너지 :</span>
+                        <span class="desc-text">위 플레이스 최적화 관리 항목과 더불어 <span class="highlight-blue">방문자 리뷰 실시간 답글 작성</span> 및 <span class="highlight-blue">최적화 블로그 후보 검수 및 배포 작업</span>을 병행하여 알고리즘 가산점을 극대화합니다.</span>
+                    </div>
+                </div>
+
+                <div class="solution-box">
+                    <div class="solution-title">💎 위드멤버 마케팅 솔루션 6가지</div>
+                    <div class="solution-item">1. 네이버 플레이스 세팅 및 관리 (SEO 최적화)</div>
+                    <div class="solution-item">2. 월 1~2회 기본 수정 (새소식, 대표키워드, 플레이스 이미지)</div>
+                    <div class="solution-item">3. 업체에 맞는 최적화 블로그 후보 검수 및 추천 리포트 제공</div>
+                    <div class="solution-item">4. 매장 또는 업체 월 1회 홍보용 인스타 인기 게시물 배포</div>
+                    <div class="solution-item">5. 네이버 플레이스 순위, 노출 변화 모니터링 및 유지 관리</div>
+                    <div class="solution-item">6. 실사용자 패턴 맞춤형 유입 트래픽 작업을 통한 플레이스 순위 상승 변화 모니터링 및 유지 관리</div>
+                </div>
+
+                <div class="content-section" style="margin-bottom: 0;">
+                    <div class="section-heading">📊 관리 후 3개월 뒤 예상 매출액 및 추이</div>
+                    <div class="detail-row" style="margin-bottom: 15px;">
+                        <span class="label-text">3개월 후 예상 매출 :</span>
+                        <span class="desc-text"><span class="highlight-blue" style="font-size: 16px;">{projected_sales_formatted}</span> 달성 전망 (상권 내 트래픽 독점 효과)</span>
+                    </div>
+                    <div style="position: relative; height: 220px; width: 100%;">
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                </div>
             </div>
 
-            <button class="download-btn" onclick="downloadImage()">📥 프리미엄 진단 리포트 이미지 저장하기</button>
+            <button class="download-btn" onclick="downloadImage()">📥 통합 프리미엄 진단 제안서 이미지 저장하기</button>
 
             <script>
+            // 차트 렌더링
+            const ctx = document.getElementById('salesChart').getContext('2d');
+            const salesChart = new Chart(ctx, {{
+                type: 'line',
+                data: {{
+                    labels: ['현재 (관리 전)', '관리 1개월 차', '관리 2개월 차', '관리 3개월 차 (목표)'],
+                    datasets: [{{
+                        label: '예상 월 매출 추이 (원)',
+                        data: [{int(projected_sales * 0.45)}, {int(projected_sales * 0.65)}, {int(projected_sales * 0.85)}, {projected_sales}],
+                        borderColor: '#0284c7',
+                        backgroundColor: 'rgba(2, 132, 199, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 5,
+                        pointBackgroundColor: '#0284c7'
+                    }}]
+                }},
+                options: {{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {{
+                        legend: {{ display: false }}
+                    }},
+                    scales: {{
+                        y: {{
+                            beginAtZero: false,
+                            ticks: {{
+                                callback: function(value) {{
+                                    return (value / 10000).toLocaleString() + '만원';
+                                }}
+                            }}
+                        }}
+                    }}
+                }}
+            }});
+
             function downloadImage() {{
                 const element = document.getElementById('capture-area');
                 html2canvas(element, {{ scale: 2, useCORS: true }}).then(canvas => {{
                     const link = document.createElement('a');
-                    link.download = '{store_name}_플레이스_진단리포트.png';
+                    link.download = '{store_name}_통합_진단제안서.png';
                     link.href = canvas.toDataURL('image/png');
                     link.click();
                 }});
@@ -376,5 +550,5 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
         </html>
         """
         
-        # Streamlit 화면에 HTML 렌더링
-        components.html(report_html, height=1750, scrolling=True)
+        # Streamlit 화면에 HTML 렌더링 (통합본 높이 확장)
+        components.html(report_html, height=2800, scrolling=True)
