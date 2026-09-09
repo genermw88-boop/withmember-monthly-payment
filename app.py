@@ -54,9 +54,18 @@ if st.button("🚀 1, 2차 독립형 리포트 생성"):
     else:
         st.success(f"[{store_name}] 1차 진단 리포트와 2차 제안서가 각각 분리되어 생성되었습니다.")
         
-        # 키워드 정보 가공 및 문제점 분기
+        # 키워드 정보 가공 및 줄바꿈 출력용 HTML 생성
         if keyword_data:
-            kw_list_str = ", ".join([f"{item['keyword']} (PC:{item['pc']}, 모바일:{item['mo']})" for item in keyword_data])
+            kw_html_parts = []
+            for item in keyword_data:
+                kw_html_parts.append(f"""
+                    <div style="margin-bottom: 8px;">
+                        <span style="font-weight: 700; color: #1e293b;">{item['keyword']}</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;PC 월 검색수 : {item['pc']:,}건<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;모바일 월 검색수 : {item['mo']:,}건
+                    </div>
+                """)
+            kw_list_str = "".join(kw_html_parts)
             keyword_problem = f"현재 등록된 대표키워드는 PC 및 모바일 검색량 대비 플레이스 최적화 알고리즘 매칭 점수가 턱없이 부족하여, 실질적인 고객 유입이 발생하는 <span class='highlight-red'>1~2페이지 상위 노출 구간에서 완전히 제외</span>된 상태입니다."
         else:
             kw_list_str = "등록된 키워드 없음"
@@ -384,7 +393,7 @@ if st.button("🚀 1, 2차 독립형 리포트 생성"):
         """
 
         # ---------------------------------------------------------
-        # 2번 리포트 HTML
+        # 2번 리포트 HTML (라벨과 설명 텍스트 간격 15px 유지)
         # ---------------------------------------------------------
         report2_html = f"""
         <!DOCTYPE html>
@@ -457,6 +466,7 @@ if st.button("🚀 1, 2차 독립형 리포트 생성"):
                 font-weight: 700;
                 color: #1e293b;
                 min-width: 130px;
+                margin-right: 15px;
                 flex-shrink: 0;
             }}
             .desc-text {{
@@ -663,9 +673,9 @@ if st.button("🚀 1, 2차 독립형 리포트 생성"):
         </html>
         """
 
-        # Streamlit 탭 또는 순차적 컴포넌트로 분리 렌더링
+        # Streamlit 탭 분리 렌더링
         tab1, tab2 = st.tabs(["📈 1차 진단 리포트", "📑 2차 솔루션 제안서"])
         with tab1:
-            components.html(report1_html, height=1750, scrolling=True)
+            components.html(report1_html, height=1850, scrolling=True)
         with tab2:
             components.html(report2_html, height=1600, scrolling=True)
