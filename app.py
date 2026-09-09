@@ -63,7 +63,6 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
         # 도구 상태 확인 및 미등록 항목 추출
         tools = {"네이버 예약": has_booking, "네이버 톡톡": has_talk, "네이버 쿠폰": has_coupon, "안심번호": has_call}
         missing_tools = [name for name, status in tools.items() if not status]
-        registered_tools = [name for name, status in tools.items() if status]
         
         booking_status = "등록" if has_booking else "미등록"
         talk_status = "등록" if has_talk else "미등록"
@@ -82,17 +81,27 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
         # 30~50개 사이 랜덤 경쟁 매장 수 생성
         random_competitors = random.randint(30, 50)
         
-        # 리뷰 분석 및 문제점/개선점 생성
-        total_reviews = visitor_reviews + blog_reviews
-        if total_reviews < 30:
-            review_problem = f"방문자 리뷰 {visitor_reviews}개, 블로그 리뷰 {blog_reviews}개로 상권 평균에 비해 평판 볼륨이 매우 부족하여, 고객 신뢰도 하락과 이탈을 초래하고 있습니다."
-            review_solution = "초기 신뢰 회복을 위해 체험단 및 영수증 리뷰 마케팅을 집중 투입하여 상권 평균 이상의 리뷰 볼륨을 즉시 확보해야 합니다."
-        elif total_reviews < 100:
-            review_problem = f"방문자 리뷰 {visitor_reviews}개, 블로그 리뷰 {blog_reviews}개로 보통 수준이나, 상위 노출 경쟁 매장들에 비해 평판 점수가 다소 밀려 유입 경쟁력이 약화되어 있습니다."
-            review_solution = "상권 상위 20% 진입을 위해 타겟 키워드 연계 블로그 리뷰와 단골 유도 프로필 혜택을 강화해야 합니다."
+        # 방문자 리뷰 문제점 및 개선점 생성
+        if visitor_reviews < 20:
+            visitor_problem = f"현재 방문자 리뷰가 <span class='highlight-red'>{visitor_reviews}개</span>로 상권 내 경쟁 매장들에 비해 압도적으로 부족하여, 매장의 신뢰도가 크게 떨어지고 잠재 고객의 유입이 차단되고 있습니다."
+            visitor_solution = "영수증 리뷰 이벤트 및 방문 고객 대상 즉시 참여 혜택을 설계하여 방문자 리뷰 볼륨을 단기간에 대폭 끌어올려야 합니다."
+        elif visitor_reviews < 100:
+            visitor_problem = f"현재 방문자 리뷰가 <span class='highlight-red'>{visitor_reviews}개</span>로 보통 수준이나, 상위 노출 매장들의 리뷰량에 비해 경쟁 우위를 확보하지 못한 상태입니다."
+            visitor_solution = "결제 고객 대상 리뷰 작성 유도 프로세스를 체계화하여 일정한 리뷰 유입 주기를 유지해야 합니다."
         else:
-            review_problem = f"방문자 리뷰 {visitor_reviews}개, 블로그 리뷰 {blog_reviews}개로 리뷰 볼륨은 양호하나, 키워드 최적화 및 도구 연동 미비로 트래픽이 매출로 이어지지 못하고 있습니다."
-            review_solution = "확보된 리뷰 평판을 바탕으로 고효율 대표키워드 전환 및 스마트 도구 연동을 완료하여 유입 극대화를 달성해야 합니다."
+            visitor_problem = f"현재 방문자 리뷰가 <span class='highlight-red'>{visitor_reviews}개</span>로 충분하나, 최신 리뷰 갱신 주기나 키워드 매칭 관리가 다소 미흡합니다."
+            visitor_solution = "주기적인 피드백 관리와 핵심 키워드가 포함된 양질의 방문자 리뷰를 지속적으로 누적해야 합니다."
+
+        # 블로그 리뷰 문제점 및 개선점 생성
+        if blog_reviews < 10:
+            blog_problem = f"현재 블로그 리뷰가 <span class='highlight-red'>{blog_reviews}개</span>로 턱없이 부족하여, 검색 이용자들이 바이럴 정보를 접하지 못해 브랜드 신뢰 형성과 예약 전환에 큰 걸림돌이 되고 있습니다."
+            blog_solution = "지역 및 업종 타겟 맞춤형 체험단 마케팅을 집중 집행하여 검색 포털 내 브랜드 노출량과 신뢰성 리포트를 확보해야 합니다."
+        elif blog_reviews < 50:
+            blog_problem = f"현재 블로그 리뷰가 <span class='highlight-red'>{blog_reviews}개</span>로 기본 홍보는 되어 있으나, 상권 내 선두 경쟁사들을 압도하기에는 노출 볼륨이 다소 부족합니다."
+            blog_solution = "핵심 대표키워드와 연계된 상위 노출형 블로그 포스팅을 정기적으로 발행하여 바이럴 장악력을 높여야 합니다."
+        else:
+            blog_problem = f"현재 블로그 리뷰가 <span class='highlight-red'>{blog_reviews}개</span>로 양호한 편이나, 최신 트렌드 키워드 반영 및 관리 주기 최적화가 필요합니다."
+            blog_solution = "검색 알고리즘 변화에 맞춘 고품질 리뷰 콘텐츠를 지속 공급하여 바이럴 지수를 최상위로 유지해야 합니다."
 
         # 최종 리포트 HTML 생성
         report_html = f"""
@@ -276,19 +285,35 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
                     </div>
                 </div>
 
-                <div class="content-section" style="margin-bottom: 0;">
-                    <div class="section-heading">⚔️ 4. 반경 500M 상권 경쟁 및 리뷰 진단</div>
+                <div class="content-section">
+                    <div class="section-heading">⚔️ 4. 반경 500M 상권 경쟁 및 방문자 리뷰 진단</div>
                     <div class="detail-row">
                         <span class="label-text">경쟁 매장 분석 :</span>
                         <span class="desc-text">타겟 상권 반경 500M 내 동종 업계 경쟁 매장은 <span class="highlight-red">약 {random_competitors}개</span>로 밀집도가 매우 높습니다.</span>
                     </div>
                     <div class="detail-row">
-                        <span class="label-text">리뷰 평판 문제점 :</span>
-                        <span class="desc-text">{review_problem}</span>
+                        <span class="label-text">방문자 리뷰 문제점 :</span>
+                        <span class="desc-text">{visitor_problem}</span>
                     </div>
                     <div class="detail-row" style="margin-bottom: 0;">
-                        <span class="label-text">리뷰 평판 개선점 :</span>
-                        <span class="desc-text">{review_solution}</span>
+                        <span class="label-text">방문자 리뷰 개선점 :</span>
+                        <span class="desc-text">{visitor_solution}</span>
+                    </div>
+                </div>
+
+                <div class="content-section" style="margin-bottom: 0;">
+                    <div class="section-heading">📝 5. 블로그 리뷰 평판 진단</div>
+                    <div class="detail-row">
+                        <span class="label-text">현재 블로그 리뷰 :</span>
+                        <span class="desc-text">총 <span class="highlight-red">{blog_reviews}개</span> 등록됨</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label-text">블로그 리뷰 문제점 :</span>
+                        <span class="desc-text">{blog_problem}</span>
+                    </div>
+                    <div class="detail-row" style="margin-bottom: 0;">
+                        <span class="label-text">블로그 리뷰 개선점 :</span>
+                        <span class="desc-text">{blog_solution}</span>
                     </div>
                 </div>
             </div>
@@ -311,4 +336,4 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
         """
         
         # Streamlit 화면에 HTML 렌더링
-        components.html(report_html, height=1300, scrolling=True)
+        components.html(report_html, height=1450, scrolling=True)
