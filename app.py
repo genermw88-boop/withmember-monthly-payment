@@ -6,7 +6,7 @@ import random
 st.set_page_config(page_title="위드멤버 종합 플레이스 & 리뷰 진단 및 솔루션 제안서", page_icon="📊", layout="wide")
 
 st.title("📊 위드멤버 종합 플레이스 & 리뷰 진단 및 솔루션 제안서")
-st.write("네이버 플레이스 도구 진단부터 최적화 관리 및 3개월 마케팅 솔루션 제안까지 한 번에 확인하세요.")
+st.write("네이버 플레이스 도구 진단부터 최적화 관리 및 3개월 마케팅 솔루션 제안서까지 각각 독립적으로 확인하고 이미지로 저장하세요.")
 
 st.markdown("---")
 st.subheader("📋 1. 매장 종합 정보")
@@ -48,11 +48,11 @@ has_call = col_t4.checkbox("안심번호(스마트콜)", value=False)
 st.markdown("---")
 
 # 진단 실행 버튼
-if st.button("🚀 종합 정밀 진단 및 솔루션 제안서 생성"):
+if st.button("🚀 1, 2차 독립형 리포트 생성"):
     if not store_name:
         st.warning("매장명을 입력해주세요.")
     else:
-        st.success(f"[{store_name}] 1, 2차 프리미엄 진단 및 솔루션 제안서가 생성되었습니다.")
+        st.success(f"[{store_name}] 1차 진단 리포트와 2차 제안서가 각각 분리되어 생성되었습니다.")
         
         # 키워드 정보 가공 및 문제점 분기
         if keyword_data:
@@ -133,14 +133,15 @@ if st.button("🚀 종합 정밀 진단 및 솔루션 제안서 생성"):
         projected_sales = random.randint(15000000, 20000000)
         projected_sales_formatted = f"{projected_sales / 10000:,.0f}만원"
 
-        # 최종 통합 리포트 HTML 생성 (1차 + 2차 제안서)
-        report_html = f"""
+        # ---------------------------------------------------------
+        # 1번 리포트 HTML
+        # ---------------------------------------------------------
+        report1_html = f"""
         <!DOCTYPE html>
         <html>
         <head>
         <meta charset="utf-8">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <style>
             * {{
                 font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', '맑은 고딕', sans-serif;
@@ -242,10 +243,6 @@ if st.button("🚀 종합 정밀 진단 및 솔루션 제안서 생성"):
                 color: #16a34a;
                 font-weight: 700;
             }}
-            .highlight-blue {{
-                color: #0284c7;
-                font-weight: 700;
-            }}
             .download-btn {{
                 display: block;
                 width: 100%;
@@ -264,71 +261,10 @@ if st.button("🚀 종합 정밀 진단 및 솔루션 제안서 생성"):
             .download-btn:hover {{
                 background: linear-gradient(135deg, #0369a1, #075985);
             }}
-            .divider {{
-                margin: 50px 0;
-                border-top: 3px dashed #cbd5e1;
-            }}
-            /* 2차 제안서 전용 스타일 */
-            .banner-box {{
-                background-color: #fffbeb;
-                border: 1px solid #fde68a;
-                border-radius: 12px;
-                padding: 20px;
-                margin-bottom: 25px;
-            }}
-            .banner-title {{
-                color: #b45309;
-                font-weight: 700;
-                font-size: 15px;
-                margin-bottom: 10px;
-                display: flex;
-                align-items: center;
-                gap: 6px;
-            }}
-            .pill-container {{
-                display: flex;
-                gap: 8px;
-                flex-wrap: wrap;
-                margin-top: 10px;
-            }}
-            .pill {{
-                background-color: #ffffff;
-                border: 1px solid #fcd34d;
-                padding: 6px 14px;
-                border-radius: 20px;
-                font-size: 13px;
-                font-weight: 600;
-                color: #92400e;
-            }}
-            .solution-box {{
-                background-color: #f0f9ff;
-                border: 1px solid #bae6fd;
-                border-radius: 12px;
-                padding: 20px;
-                margin-bottom: 25px;
-            }}
-            .solution-title {{
-                color: #0369a1;
-                font-weight: 700;
-                font-size: 16px;
-                text-align: center;
-                margin-bottom: 15px;
-            }}
-            .solution-item {{
-                background-color: #ffffff;
-                border: 1px solid #e0f2fe;
-                border-radius: 8px;
-                padding: 12px 16px;
-                margin-bottom: 8px;
-                font-size: 14px;
-                font-weight: 600;
-                color: #0369a1;
-            }}
         </style>
         </head>
         <body>
-            <div id="capture-area" class="report-container">
-                <!-- 1차 리포트 영역 -->
+            <div id="capture-area-1" class="report-container">
                 <div class="report-header">
                     <div class="report-title">📈 플레이스 진단 리포트 (1/2)</div>
                     <div class="store-badge">매장명 : {store_name}</div>
@@ -428,13 +364,191 @@ if st.button("🚀 종합 정밀 진단 및 솔루션 제안서 생성"):
                         <span class="desc-text">{visitor_solution}</span>
                     </div>
                 </div>
+            </div>
 
-                <!-- 구분선 -->
-                <div class="divider"></div>
+            <button class="download-btn" onclick="downloadImage1()">📥 1차 진단 리포트 이미지 저장하기</button>
 
-                <!-- 2차 리포트 영역 -->
-                <div class="report-header" style="border-bottom-color: #0369a1;">
-                    <div class="report-title" style="color: #0369a1;">📑 맞춤형 평판 진단 제안서 (2/2)</div>
+            <script>
+            function downloadImage1() {{
+                const element = document.getElementById('capture-area-1');
+                html2canvas(element, {{ scale: 2, useCORS: true }}).then(canvas => {{
+                    const link = document.createElement('a');
+                    link.download = '{store_name}_플레이스_진단리포트_1차.png';
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                }});
+            }}
+            </script>
+        </body>
+        </html>
+        """
+
+        # ---------------------------------------------------------
+        # 2번 리포트 HTML
+        # ---------------------------------------------------------
+        report2_html = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+        <meta charset="utf-8">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <style>
+            * {{
+                font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', '맑은 고딕', sans-serif;
+                box-sizing: border-box;
+            }}
+            .report-container {{
+                background-color: #ffffff;
+                border: 2px solid #e2e8f0;
+                border-radius: 20px;
+                padding: 40px;
+                max-width: 820px;
+                margin: 0 auto;
+                color: #0f172a;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            }}
+            .report-header {{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 3px solid #0369a1;
+                padding-bottom: 20px;
+                margin-bottom: 30px;
+            }}
+            .report-title {{
+                font-size: 26px;
+                font-weight: 800;
+                color: #0369a1;
+            }}
+            .store-badge {{
+                background-color: #f0f9ff;
+                border: 1px solid #bae6fd;
+                padding: 8px 16px;
+                border-radius: 20px;
+                font-size: 15px;
+                font-weight: 700;
+                color: #0369a1;
+            }}
+            .content-section {{
+                background-color: #f8fafc;
+                border-radius: 12px;
+                border: 1px solid #e2e8f0;
+                padding: 24px;
+                margin-bottom: 20px;
+            }}
+            .section-heading {{
+                font-size: 16px;
+                font-weight: 700;
+                color: #0369a1;
+                margin-bottom: 14px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }}
+            .detail-row {{
+                font-size: 14px;
+                margin-bottom: 12px;
+                line-height: 1.7;
+                color: #334155;
+                display: flex;
+            }}
+            .label-text {{
+                font-weight: 700;
+                color: #1e293b;
+                min-width: 130px;
+                flex-shrink: 0;
+            }}
+            .desc-text {{
+                flex-grow: 1;
+            }}
+            .highlight-red {{
+                color: #dc2626;
+                font-weight: 700;
+            }}
+            .highlight-blue {{
+                color: #0284c7;
+                font-weight: 700;
+            }}
+            .download-btn {{
+                display: block;
+                width: 100%;
+                background: linear-gradient(135deg, #0369a1, #075985);
+                color: white;
+                text-align: center;
+                padding: 15px;
+                font-size: 16px;
+                font-weight: bold;
+                border: none;
+                border-radius: 12px;
+                cursor: pointer;
+                margin-top: 30px;
+                box-shadow: 0 4px 12px rgba(3, 105, 161, 0.3);
+            }}
+            .download-btn:hover {{
+                background: linear-gradient(135deg, #075985, #0f172a);
+            }}
+            .banner-box {{
+                background-color: #fffbeb;
+                border: 1px solid #fde68a;
+                border-radius: 12px;
+                padding: 20px;
+                margin-bottom: 25px;
+            }}
+            .banner-title {{
+                color: #b45309;
+                font-weight: 700;
+                font-size: 15px;
+                margin-bottom: 10px;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }}
+            .pill-container {{
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+                margin-top: 10px;
+            }}
+            .pill {{
+                background-color: #ffffff;
+                border: 1px solid #fcd34d;
+                padding: 6px 14px;
+                border-radius: 20px;
+                font-size: 13px;
+                font-weight: 600;
+                color: #92400e;
+            }}
+            .solution-box {{
+                background-color: #f0f9ff;
+                border: 1px solid #bae6fd;
+                border-radius: 12px;
+                padding: 20px;
+                margin-bottom: 25px;
+            }}
+            .solution-title {{
+                color: #0369a1;
+                font-weight: 700;
+                font-size: 16px;
+                text-align: center;
+                margin-bottom: 15px;
+            }}
+            .solution-item {{
+                background-color: #ffffff;
+                border: 1px solid #e0f2fe;
+                border-radius: 8px;
+                padding: 12px 16px;
+                margin-bottom: 8px;
+                font-size: 14px;
+                font-weight: 600;
+                color: #0369a1;
+            }}
+        </style>
+        </head>
+        <body>
+            <div id="capture-area-2" class="report-container">
+                <div class="report-header">
+                    <div class="report-title">📑 맞춤형 평판 진단 제안서 (2/2)</div>
                     <div class="store-badge">대상 매장: {store_name}</div>
                 </div>
 
@@ -491,30 +605,29 @@ if st.button("🚀 종합 정밀 진단 및 솔루션 제안서 생성"):
                         <span class="desc-text"><span class="highlight-blue" style="font-size: 16px;">{projected_sales_formatted}</span> 달성 전망 (상권 내 트래픽 독점 효과)</span>
                     </div>
                     <div style="position: relative; height: 220px; width: 100%;">
-                        <canvas id="salesChart"></canvas>
+                        <canvas id="salesChart2"></canvas>
                     </div>
                 </div>
             </div>
 
-            <button class="download-btn" onclick="downloadImage()">📥 통합 프리미엄 진단 제안서 이미지 저장하기</button>
+            <button class="download-btn" onclick="downloadImage2()">📥 2차 솔루션 제안서 이미지 저장하기</button>
 
             <script>
-            // 차트 렌더링
-            const ctx = document.getElementById('salesChart').getContext('2d');
-            const salesChart = new Chart(ctx, {{
+            const ctx2 = document.getElementById('salesChart2').getContext('2d');
+            new Chart(ctx2, {{
                 type: 'line',
                 data: {{
                     labels: ['현재 (관리 전)', '관리 1개월 차', '관리 2개월 차', '관리 3개월 차 (목표)'],
                     datasets: [{{
                         label: '예상 월 매출 추이 (원)',
                         data: [{int(projected_sales * 0.45)}, {int(projected_sales * 0.65)}, {int(projected_sales * 0.85)}, {projected_sales}],
-                        borderColor: '#0284c7',
-                        backgroundColor: 'rgba(2, 132, 199, 0.1)',
+                        borderColor: '#0369a1',
+                        backgroundColor: 'rgba(3, 105, 161, 0.1)',
                         borderWidth: 3,
                         fill: true,
                         tension: 0.3,
                         pointRadius: 5,
-                        pointBackgroundColor: '#0284c7'
+                        pointBackgroundColor: '#0369a1'
                     }}]
                 }},
                 options: {{
@@ -536,11 +649,11 @@ if st.button("🚀 종합 정밀 진단 및 솔루션 제안서 생성"):
                 }}
             }});
 
-            function downloadImage() {{
-                const element = document.getElementById('capture-area');
+            function downloadImage2() {{
+                const element = document.getElementById('capture-area-2');
                 html2canvas(element, {{ scale: 2, useCORS: true }}).then(canvas => {{
                     const link = document.createElement('a');
-                    link.download = '{store_name}_통합_진단제안서.png';
+                    link.download = '{store_name}_솔루션제안서_2차.png';
                     link.href = canvas.toDataURL('image/png');
                     link.click();
                 }});
@@ -549,6 +662,10 @@ if st.button("🚀 종합 정밀 진단 및 솔루션 제안서 생성"):
         </body>
         </html>
         """
-        
-        # Streamlit 화면에 HTML 렌더링 (통합본 높이 확장)
-        components.html(report_html, height=2800, scrolling=True)
+
+        # Streamlit 탭 또는 순차적 컴포넌트로 분리 렌더링
+        tab1, tab2 = st.tabs(["📈 1차 진단 리포트", "📑 2차 솔루션 제안서"])
+        with tab1:
+            components.html(report1_html, height=1750, scrolling=True)
+        with tab2:
+            components.html(report2_html, height=1600, scrolling=True)
