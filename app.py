@@ -118,7 +118,7 @@ if st.button("🚀 1, 2차 독립형 리포트 생성"):
         random_rank_str = f"{random_page_start}~{random_page_end}페이지"
         
         random_competitor_percent = random.randint(80, 90)
-        random_competitors = random.randint(30, 50)
+        random_competitors = random.randint(25, 35)
         
         competitor_analysis = f"타겟 상권 반경 500M 내 동종 업계 경쟁 매장은 <span class='highlight-red'>약 {random_competitors}개</span>로 밀집도가 매우 높습니다."
         competitor_solution = f"치열한 상권 밀집도 속에서 우위를 점하기 위해, 상위 노출 경쟁사들의 마케팅 패턴을 분석하고 차별화된 메뉴 강조 포인트와 타겟 맞춤형 플레이스 상위 최적화 전략을 즉시 도입해야 합니다."
