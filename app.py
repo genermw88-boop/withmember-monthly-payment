@@ -69,7 +69,7 @@ if st.button("🚀 1, 2차 독립형 리포트 생성"):
             keyword_problem = f"현재 등록된 대표키워드는 PC 및 모바일 검색량 대비 플레이스 최적화 알고리즘 매칭 점수가 턱없이 부족하여, 실질적인 고객 유입이 발생하는 <span class='highlight-red'>1~2페이지 상위 노출 구간에서 완전히 제외</span>된 상태입니다."
         else:
             kw_list_str = "<div style='color: #64748b; font-size: 13px;'>등록된 키워드 없음</div>"
-            keyword_problem = f"현재 등록된 키워드가 없어서 플레이스 검색 유입의 기본 뼈대가 되는 타겟 키워드 매칭이 전혀 이루어지지 않고 있으며, 잠재 고객들이 매장을 발견할 수 있는 <span class='highlight-red'>모든 검색 노출 경로가 완전히 차단되어 심각한 유입 손실</span>이 발생하고 있습니다."
+            keyword_problem = f"현재 등록된 키워드가 없어서 플레이스 검색 유입의 기본 뼈대가 되는 타겟 키워드 매칭이 전혀 이루어지고 있지 않으며, 잠재 고객들이 매장을 발견할 수 있는 <span class='highlight-red'>모든 검색 노출 경로가 완전히 차단되어 심각한 유입 손실</span>이 발생하고 있습니다."
         
         # 도구 상태 및 색상 클래스 분기
         booking_html = "<span class='highlight-green'>등록</span>" if has_booking else "<span class='highlight-red'>미등록</span>"
@@ -613,9 +613,8 @@ if st.button("🚀 1, 2차 독립형 리포트 생성"):
 
                 <div class="content-section" style="margin-bottom: 0;">
                     <div class="section-heading">📊 관리 후 3개월 뒤 예상 매출액 및 추이</div>
-                    <div class="detail-row" style="margin-bottom: 15px;">
-                        <span class="label-text">3개월 후 예상 매출 :</span>
-                        <span class="desc-text"><span class="highlight-blue" style="font-size: 16px;">{projected_sales_formatted}</span> 달성 전망 (상권 내 트래픽 독점 효과)</span>
+                    <div style="margin-bottom: 15px; font-size: 14px; font-weight: 700; color: #1e293b;">
+                        3개월 후 예상 매출 : <span class="highlight-blue" style="font-size: 16px;">{projected_sales_formatted}</span> 달성 전망 (상권 내 트래픽 독점 효과)
                     </div>
                     <div style="position: relative; height: 220px; width: 100%;">
                         <canvas id="salesChart2"></canvas>
