@@ -627,7 +627,7 @@ if st.button("🚀 1, 2차 독립형 리포트 생성"):
 
             <script>
             const ctx2 = document.getElementById('salesChart2').getContext('2d');
-            newChart(ctx2, {{
+            new Chart(ctx2, {{
                 type: 'line',
                 data: {{
                     labels: ['현재 (관리 전)', '관리 1개월 차', '관리 2개월 차', '관리 3개월 차 (목표)'],
