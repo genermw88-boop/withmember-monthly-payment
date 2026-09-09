@@ -54,21 +54,21 @@ if st.button("🚀 1, 2차 독립형 리포트 생성"):
     else:
         st.success(f"[{store_name}] 1차 진단 리포트와 2차 제안서가 각각 분리되어 생성되었습니다.")
         
-        # 키워드 정보 가공 및 줄바꿈 출력용 HTML 생성
+        # 키워드 정보 가공 및 카드 그리드 형태 HTML 생성
         if keyword_data:
-            kw_html_parts = []
+            kw_cards_html = []
             for item in keyword_data:
-                kw_html_parts.append(f"""
-                    <div style="margin-bottom: 8px;">
-                        <span style="font-weight: 700; color: #1e293b;">{item['keyword']}</span><br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;PC 월 검색수 : {item['pc']:,}건<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;모바일 월 검색수 : {item['mo']:,}건
+                kw_cards_html.append(f"""
+                    <div style="background-color: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                        <div style="font-weight: 700; color: #0284c7; font-size: 14px; margin-bottom: 6px; border-bottom: 1px solid #f1f5f9; padding-bottom: 4px;">{item['keyword']}</div>
+                        <div style="font-size: 12px; color: #475569; margin-bottom: 2px;">PC 월 검색수 : <span style="font-weight: 700; color: #1e293b;">{item['pc']:,}건</span></div>
+                        <div style="font-size: 12px; color: #475569;">모바일 월 검색수 : <span style="font-weight: 700; color: #1e293b;">{item['mo']:,}건</span></div>
                     </div>
                 """)
-            kw_list_str = "".join(kw_html_parts)
+            kw_list_str = "".join(kw_cards_html)
             keyword_problem = f"현재 등록된 대표키워드는 PC 및 모바일 검색량 대비 플레이스 최적화 알고리즘 매칭 점수가 턱없이 부족하여, 실질적인 고객 유입이 발생하는 <span class='highlight-red'>1~2페이지 상위 노출 구간에서 완전히 제외</span>된 상태입니다."
         else:
-            kw_list_str = "등록된 키워드 없음"
+            kw_list_str = "<div style='color: #64748b; font-size: 13px;'>등록된 키워드 없음</div>"
             keyword_problem = f"현재 등록된 키워드가 없어서 플레이스 검색 유입의 기본 뼈대가 되는 타겟 키워드 매칭이 전혀 이루어지지 않고 있으며, 잠재 고객들이 매장을 발견할 수 있는 <span class='highlight-red'>모든 검색 노출 경로가 완전히 차단되어 심각한 유입 손실</span>이 발생하고 있습니다."
         
         # 도구 상태 및 색상 클래스 분기
@@ -238,7 +238,8 @@ if st.button("🚀 1, 2차 독립형 리포트 생성"):
             .label-text {{
                 font-weight: 700;
                 color: #1e293b;
-                min-width: 130px;
+                min-width: 155px;
+                margin-right: 15px;
                 flex-shrink: 0;
             }}
             .desc-text {{
@@ -297,10 +298,12 @@ if st.button("🚀 1, 2차 독립형 리포트 생성"):
                 <div class="content-section">
                     <div class="section-heading">🔍 1. 키워드 검색량 대비 노출 진단</div>
                     <div class="detail-row">
-                        <span class="label-text">현재 등록 키워드 :</span>
-                        <span class="desc-text">{kw_list_str}</span>
+                        <span class="label-text">현재 등록 키워드 / 검색량 :</span>
+                        <div class="desc-text" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px;">
+                            {kw_list_str}
+                        </div>
                     </div>
-                    <div class="detail-row" style="margin-bottom: 0;">
+                    <div class="detail-row" style="margin-bottom: 0; margin-top: 15px;">
                         <span class="label-text">문제점 분석 :</span>
                         <span class="desc-text">{keyword_problem}</span>
                     </div>
@@ -393,7 +396,7 @@ if st.button("🚀 1, 2차 독립형 리포트 생성"):
         """
 
         # ---------------------------------------------------------
-        # 2번 리포트 HTML (라벨과 설명 텍스트 간격 15px 유지)
+        # 2번 리포트 HTML
         # ---------------------------------------------------------
         report2_html = f"""
         <!DOCTYPE html>
@@ -465,7 +468,7 @@ if st.button("🚀 1, 2차 독립형 리포트 생성"):
             .label-text {{
                 font-weight: 700;
                 color: #1e293b;
-                min-width: 130px;
+                min-width: 155px;
                 margin-right: 15px;
                 flex-shrink: 0;
             }}
@@ -624,7 +627,7 @@ if st.button("🚀 1, 2차 독립형 리포트 생성"):
 
             <script>
             const ctx2 = document.getElementById('salesChart2').getContext('2d');
-            new Chart(ctx2, {{
+            newChart(ctx2, {{
                 type: 'line',
                 data: {{
                     labels: ['현재 (관리 전)', '관리 1개월 차', '관리 2개월 차', '관리 3개월 차 (목표)'],
