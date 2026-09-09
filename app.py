@@ -54,11 +54,13 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
     else:
         st.success(f"[{store_name}] 전문가용 플레이스 진단 리포트가 생성되었습니다.")
         
-        # 키워드 정보 가공
+        # 키워드 정보 가공 및 문제점 분기
         if keyword_data:
             kw_list_str = ", ".join([f"{item['keyword']} (PC:{item['pc']}, 모바일:{item['mo']})" for item in keyword_data])
+            keyword_problem = f"현재 등록된 대표키워드는 PC 및 모바일 검색량 대비 플레이스 최적화 알고리즘 매칭 점수가 턱없이 부족하여, 실질적인 고객 유입이 발생하는 <span class='highlight-red'>1~2페이지 상위 노출 구간에서 완전히 제외</span>된 상태입니다."
         else:
             kw_list_str = "등록된 키워드 없음"
+            keyword_problem = f"현재 등록된 키워드가 없어서 플레이스 검색 유입의 기본 뼈대가 되는 타겟 키워드 매칭이 전혀 이루어지지 않고 있으며, 잠재 고객들이 매장을 발견할 수 있는 <span class='highlight-red'>모든 검색 노출 경로가 완전히 차단되어 심각한 유입 손실</span>이 발생하고 있습니다."
         
         # 도구 상태 및 색상 클래스 분기
         booking_html = "<span class='highlight-green'>등록</span>" if has_booking else "<span class='highlight-red'>미등록</span>"
@@ -92,15 +94,13 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
             tool_problem = "필수 마케팅 도구(예약, 톡톡, 쿠폰, 안심번호)가 모두 빠짐없이 완벽하게 등록되어 있습니다."
             tool_solution = "모든 도구가 훌륭하게 세팅되어 있으므로, 각 도구 연계 프로필 이벤트나 응대 속도를 최상위로 유지하여 전환율을 방어해야 합니다."
 
-        # 요청하신 랜덤 지표 생성
+        # 랜덤 지표 생성
         random_score = random.randint(10, 30)
         random_page_start = random.randint(6, 9)
         random_page_end = random_page_start + 1
         random_rank_str = f"{random_page_start}~{random_page_end}페이지"
         
         random_competitor_percent = random.randint(80, 90)
-        
-        # 30~50개 사이 랜덤 경쟁 매장 수 생성
         random_competitors = random.randint(30, 50)
         
         competitor_analysis = f"타겟 상권 반경 500M 내 동종 업계 경쟁 매장은 <span class='highlight-red'>약 {random_competitors}개</span>로 밀집도가 매우 높습니다."
@@ -286,7 +286,7 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
                     </div>
                     <div class="detail-row" style="margin-bottom: 0;">
                         <span class="label-text">문제점 분석 :</span>
-                        <span class="desc-text">현재 등록된 대표키워드는 PC 및 모바일 검색량 대비 플레이스 최적화 알고리즘 매칭 점수가 턱없이 부족하여, 실질적인 고객 유입이 발생하는 <span class="highlight-red">1~2페이지 상위 노출 구간에서 완전히 제외</span>된 상태입니다.</span>
+                        <span class="desc-text">{keyword_problem}</span>
                     </div>
                 </div>
 
