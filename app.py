@@ -60,11 +60,11 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
         else:
             kw_list_str = "등록된 키워드 없음"
         
-        # 도구 상태 확인 및 미등록/등록 항목 추출
-        booking_status = "등록" if has_booking else "미등록"
-        talk_status = "등록" if has_talk else "미등록"
-        coupon_status = "등록" if has_coupon else "미등록"
-        call_status = "등록" if has_call else "미등록"
+        # 도구 상태 및 색상 클래스 분기 (등록: 초록색, 미등록: 빨간색)
+        booking_html = "<span class='highlight-green'>등록</span>" if has_booking else "<span class='highlight-red'>미등록</span>"
+        talk_html = "<span class='highlight-green'>등록</span>" if has_talk else "<span class='highlight-red'>미등록</span>"
+        coupon_html = "<span class='highlight-green'>등록</span>" if has_coupon else "<span class='highlight-red'>미등록</span>"
+        call_html = "<span class='highlight-green'>등록</span>" if has_call else "<span class='highlight-red'>미등록</span>"
         
         # 체크된 항목과 안 된 항목 동적 분기
         registered_list = []
@@ -83,7 +83,7 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
         if missing_list and registered_list:
             reg_str = ", ".join(registered_list)
             miss_str = ", ".join(missing_list)
-            tool_problem = f"현재 <span class='highlight-red'>{reg_str}</span> 도구는 정상 세팅되어 있으나, 필수 도구 중 <span class='highlight-red'>{miss_str}</span> 항목이 누락되어 있어 완벽한 알고리즘 가산점을 확보하지 못하고 있습니다."
+            tool_problem = f"현재 <span class='highlight-green'>{reg_str}</span> 도구는 정상 세팅되어 있으나, 필수 도구 중 <span class='highlight-red'>{miss_str}</span> 항목이 누락되어 있어 완벽한 알고리즘 가산점을 확보하지 못하고 있습니다."
             tool_solution = f"잘 세팅된 도구와 시너지를 내도록 누락된 <span class='highlight-red'>{miss_str}</span> 도구를 추가로 세팅하여 플레이스 지수를 극대화해야 합니다."
         elif missing_list and not registered_list:
             miss_str = ", ".join(missing_list)
@@ -96,7 +96,7 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
         # 30~50개 사이 랜덤 경쟁 매장 수 생성
         random_competitors = random.randint(30, 50)
         
-        # 4번 항목: 반경 500M 상권 경쟁 진단 및 개선점 생성 (누락되었던 개선점 추가 완료)
+        # 4번 항목: 반경 500M 상권 경쟁 진단 및 개선점 생성
         competitor_analysis = f"타겟 상권 반경 500M 내 동종 업계 경쟁 매장은 <span class='highlight-red'>약 {random_competitors}개</span>로 밀집도가 매우 높습니다."
         competitor_solution = f"치열한 상권 밀집도 속에서 우위를 점하기 위해, 상위 노출 경쟁사들의 마케팅 패턴을 분석하고 차별화된 메뉴 강조 포인트와 타겟 맞춤형 플레이스 상위 최적화 전략을 즉시 도입해야 합니다."
 
@@ -226,6 +226,10 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
                 color: #dc2626;
                 font-weight: 700;
             }}
+            .highlight-green {{
+                color: #16a34a;
+                font-weight: 700;
+            }}
             .download-btn {{
                 display: block;
                 width: 100%;
@@ -292,7 +296,7 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
                     <div class="section-heading">🛠️ 3. 네이버 마케팅 도구 세팅 진단</div>
                     <div class="detail-row">
                         <span class="label-text">도구 활성화 :</span>
-                        <span class="desc-text">예약(<span class="highlight-red">{booking_status}</span>), 톡톡(<span class="highlight-red">{talk_status}</span>), 쿠폰(<span class="highlight-red">{coupon_status}</span>), 안심번호(<span class="highlight-red">{call_status}</span>)</span>
+                        <span class="desc-text">예약({booking_html}), 톡톡({talk_html}), 쿠폰({coupon_html}), 안심번호({call_html})</span>
                     </div>
                     <div class="detail-row">
                         <span class="label-text">도구 누락 문제점 :</span>
@@ -320,7 +324,7 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
                     <div class="section-heading">📝 5. 블로그 리뷰 평판 진단</div>
                     <div class="detail-row">
                         <span class="label-text">현재 블로그 리뷰 :</span>
-                        <span class="desc-text">총 <span class="highlight-red">{blog_reviews}개</span> 등록됨</span>
+                        <span class="desc-text">총 <span class="highlight-red">{blog_reviews}개</span></span>
                     </div>
                     <div class="detail-row">
                         <span class="label-text">블로그 리뷰 문제점 :</span>
@@ -336,7 +340,7 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
                     <div class="section-heading">⭐ 6. 방문자 리뷰 수 정밀 진단</div>
                     <div class="detail-row">
                         <span class="label-text">입력 방문자 리뷰 :</span>
-                        <span class="desc-text">총 <span class="highlight-red">{visitor_reviews}개</span> 입력됨</span>
+                        <span class="desc-text">총 <span class="highlight-red">{visitor_reviews}개</span></span>
                     </div>
                     <div class="detail-row">
                         <span class="label-text">방문자 리뷰 문제점 :</span>
