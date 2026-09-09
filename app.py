@@ -40,10 +40,10 @@ st.subheader("🛠️ 2. 네이버 플레이스 도구 세팅 여부 (체크)")
 st.write("현재 사장님 매장에 활성화되어 있는 도구만 체크해 주세요.")
 
 col_t1, col_t2, col_t3, col_t4 = st.columns(4)
-has_booking = col_t1.checkbox("네이버 예약", value=True)
-has_talk = col_t2.checkbox("네이버 톡톡")
-has_coupon = col_t3.checkbox("네이버 쿠폰")
-has_call = col_t4.checkbox("안심번호(스마트콜)")
+has_booking = col_t1.checkbox("네이버 예약", value=False)
+has_talk = col_t2.checkbox("네이버 톡톡", value=False)
+has_coupon = col_t3.checkbox("네이버 쿠폰", value=False)
+has_call = col_t4.checkbox("안심번호(스마트콜)", value=False)
 
 st.markdown("---")
 
@@ -60,29 +60,31 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
         else:
             kw_list_str = "등록된 키워드 없음"
         
-        # 도구 상태 확인 및 미등록 항목 추출
+        # 도구 상태 확인 및 미등록/등록 항목 추출
         tools = {"네이버 예약": has_booking, "네이버 톡톡": has_talk, "네이버 쿠폰": has_coupon, "안심번호": has_call}
         missing_tools = [name for name, status in tools.items() if not status]
+        registered_tools = [name for name, status in tools.items() if status]
         
         booking_status = "등록" if has_booking else "미등록"
         talk_status = "등록" if has_talk else "미등록"
         coupon_status = "등록" if has_coupon else "미등록"
         call_status = "등록" if has_call else "미등록"
         
-        # 도구 관련 문제점 및 개선점 생성
+        # 도구 관련 문제점 및 개선점 생성 (체크 상태 반영)
         if missing_tools:
             missing_str = ", ".join(missing_tools)
             tool_problem = f"필수 마케팅 도구 중 <span class='highlight-red'>{missing_str}</span> 항목이 누락되어 있어, 네이버 알고리즘 평가에서 가산점을 확보하지 못하고 검색 순위가 하락하는 원인이 됩니다."
             tool_solution = f"누락된 <span class='highlight-red'>{missing_str}</span> 도구를 즉시 세팅하여 플랫폼 가산점을 확보하고, 유저 편의성을 높여 예약 및 전환율을 극대화해야 합니다."
         else:
-            tool_problem = "핵심 마케팅 도구는 모두 등록되어 있으나, 각 기능의 연계 활용도와 최적화 세팅 정밀도가 다소 부족합니다."
-            tool_solution = "등록된 도구들과 연계한 프로필 이벤트 및 톡톡 응대 자동화를 통해 전환 효율을 더욱 높여야 합니다."
+            tool_problem = "핵심 마케팅 도구가 모두 등록되어 있으나, 각 기능의 고도화된 연계 활용도와 실시간 응대 세팅 정밀도가 다소 부족합니다."
+            tool_solution = "등록된 도구들과 연계한 상시 프로필 이벤트 및 자동 응대 시스템을 구축하여 고객 전환 효율을 최상위로 유지해야 합니다."
 
         # 30~50개 사이 랜덤 경쟁 매장 수 생성
         random_competitors = random.randint(30, 50)
         
-        # 상권 경쟁 관련 진단
+        # 4번 항목: 반경 500M 상권 경쟁 진단 및 개선점 생성
         competitor_analysis = f"타겟 상권 반경 500M 내 동종 업계 경쟁 매장은 <span class='highlight-red'>약 {random_competitors}개</span>로 밀집도가 매우 높습니다."
+        competitor_solution = f"치열한 상권 밀집도 속에서 우위를 점하기 위해, 상위 노출 경쟁사들의 마케팅 패턴을 분석하고 차별화된 핵심 메뉴 강조 및 타겟 맞춤형 플레이스 상위 최적화 전략을 즉시 도입해야 합니다."
 
         # 5번 항목: 블로그 리뷰 문제점 및 개선점 생성
         if blog_reviews < 10:
@@ -290,9 +292,13 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
 
                 <div class="content-section">
                     <div class="section-heading">⚔️ 4. 반경 500M 상권 경쟁 진단</div>
-                    <div class="detail-row" style="margin-bottom: 0;">
+                    <div class="detail-row">
                         <span class="label-text">경쟁 매장 분석 :</span>
                         <span class="desc-text">{competitor_analysis}</span>
+                    </div>
+                    <div class="detail-row" style="margin-bottom: 0;">
+                        <span class="label-text">상권 경쟁 개선점 :</span>
+                        <span class="desc-text">{competitor_solution}</span>
                     </div>
                 </div>
 
@@ -347,4 +353,4 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
         """
         
         # Streamlit 화면에 HTML 렌더링
-        components.html(report_html, height=1600, scrolling=True)
+        components.html(report_html, height=1750, scrolling=True)
