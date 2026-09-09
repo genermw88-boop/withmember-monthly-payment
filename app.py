@@ -61,30 +61,44 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
             kw_list_str = "등록된 키워드 없음"
         
         # 도구 상태 확인 및 미등록/등록 항목 추출
-        tools = {"네이버 예약": has_booking, "네이버 톡톡": has_talk, "네이버 쿠폰": has_coupon, "안심번호": has_call}
-        missing_tools = [name for name, status in tools.items() if not status]
-        registered_tools = [name for name, status in tools.items() if status]
-        
         booking_status = "등록" if has_booking else "미등록"
         talk_status = "등록" if has_talk else "미등록"
         coupon_status = "등록" if has_coupon else "미등록"
         call_status = "등록" if has_call else "미등록"
         
-        # 도구 관련 문제점 및 개선점 생성
-        if missing_tools:
-            missing_str = ", ".join(missing_tools)
-            tool_problem = f"필수 마케팅 도구 중 <span class='highlight-red'>{missing_str}</span> 항목이 누락되어 있어, 네이버 알고리즘 평가에서 가산점을 확보하지 못하고 검색 순위가 하락하는 원인이 됩니다."
-            tool_solution = f"누락된 <span class='highlight-red'>{missing_str}</span> 도구를 즉시 세팅하여 플랫폼 가산점을 확보하고, 유저 편의성을 높여 예약 및 전환율을 극대화해야 합니다."
+        # 체크된 항목과 안 된 항목 동적 분기
+        registered_list = []
+        if has_booking: registered_list.append("네이버 예약")
+        if has_talk: registered_list.append("네이버 톡톡")
+        if has_coupon: registered_list.append("네이버 쿠폰")
+        if has_call: registered_list.append("안심번호")
+
+        missing_list = []
+        if not has_booking: missing_list.append("네이버 예약")
+        if not has_talk: missing_list.append("네이버 톡톡")
+        if not has_coupon: missing_list.append("네이버 쿠폰")
+        if not has_call: missing_list.append("안심번호")
+
+        # 3번 도구 진단 문구 동적 생성
+        if missing_list and registered_list:
+            reg_str = ", ".join(registered_list)
+            miss_str = ", ".join(missing_list)
+            tool_problem = f"현재 <span class='highlight-red'>{reg_str}</span> 도구는 정상 세팅되어 있으나, 필수 도구 중 <span class='highlight-red'>{miss_str}</span> 항목이 누락되어 있어 완벽한 알고리즘 가산점을 확보하지 못하고 있습니다."
+            tool_solution = f"잘 세팅된 도구와 시너지를 내도록 누락된 <span class='highlight-red'>{miss_str}</span> 도구를 추가로 세팅하여 플레이스 지수를 극대화해야 합니다."
+        elif missing_list and not registered_list:
+            miss_str = ", ".join(missing_list)
+            tool_problem = f"필수 마케팅 도구인 <span class='highlight-red'>{miss_str}</span> 항목이 모두 누락되어 있어, 네이버 알고리즘 평가에서 가산점을 전혀 받지 못해 검색 순위 하락의 직접적인 원인이 됩니다."
+            tool_solution = f"누락된 <span class='highlight-red'>{miss_str}</span> 도구를 즉시 도입하여 플랫폼 가산점을 확보하고 고객 유입 채널을 열어야 합니다."
         else:
-            tool_problem = "핵심 마케팅 도구가 모두 등록되어 있으나, 각 기능의 고도화된 연계 활용도와 실시간 응대 세팅 정밀도가 다소 부족합니다."
-            tool_solution = "등록된 도구들과 연계한 상시 프로필 이벤트 및 자동 응대 시스템을 구축하여 고객 전환 효율을 최상위로 유지해야 합니다."
+            tool_problem = "필수 마케팅 도구(예약, 톡톡, 쿠폰, 안심번호)가 모두 빠짐없이 완벽하게 등록되어 있습니다."
+            tool_solution = "모든 도구가 훌륭하게 세팅되어 있으므로, 각 도구 연계 프로필 이벤트나 응대 속도를 최상위로 유지하여 전환율을 방어해야 합니다."
 
         # 30~50개 사이 랜덤 경쟁 매장 수 생성
         random_competitors = random.randint(30, 50)
         
-        # 4번 항목: 반경 500M 상권 경쟁 진단 및 개선점 생성
+        # 4번 항목: 반경 500M 상권 경쟁 진단 및 개선점 생성 (누락되었던 개선점 추가 완료)
         competitor_analysis = f"타겟 상권 반경 500M 내 동종 업계 경쟁 매장은 <span class='highlight-red'>약 {random_competitors}개</span>로 밀집도가 매우 높습니다."
-        competitor_solution = f"치열한 상권 밀집도 속에서 우위를 점하기 위해, 상위 노출 경쟁사들의 마케팅 패턴을 분석하고 차별화된 핵심 메뉴 강조 및 타겟 맞춤형 플레이스 상위 최적화 전략을 즉시 도입해야 합니다."
+        competitor_solution = f"치열한 상권 밀집도 속에서 우위를 점하기 위해, 상위 노출 경쟁사들의 마케팅 패턴을 분석하고 차별화된 메뉴 강조 포인트와 타겟 맞춤형 플레이스 상위 최적화 전략을 즉시 도입해야 합니다."
 
         # 5번 항목: 블로그 리뷰 문제점 및 개선점 생성
         if blog_reviews < 10:
