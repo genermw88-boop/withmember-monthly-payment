@@ -81,26 +81,26 @@ if st.button("🚀 종합 정밀 진단 및 리포트 생성"):
         # 30~50개 사이 랜덤 경쟁 매장 수 생성
         random_competitors = random.randint(30, 50)
         
-        # 방문자 리뷰 문제점 및 개선점 생성
+        # 방문자 리뷰 문제점 및 개선점 생성 (입력된 수치 반영 명확화)
         if visitor_reviews < 20:
-            visitor_problem = f"현재 방문자 리뷰가 <span class='highlight-red'>{visitor_reviews}개</span>로 상권 내 경쟁 매장들에 비해 압도적으로 부족하여, 매장의 신뢰도가 크게 떨어지고 잠재 고객의 유입이 차단되고 있습니다."
-            visitor_solution = "영수증 리뷰 이벤트 및 방문 고객 대상 즉시 참여 혜택을 설계하여 방문자 리뷰 볼륨을 단기간에 대폭 끌어올려야 합니다."
+            visitor_problem = f"입력하신 방문자 리뷰가 총 <span class='highlight-red'>{visitor_reviews}개</span>로 상권 내 경쟁 매장들에 비해 턱없이 부족하여, 매장의 실뢰도가 크게 떨어지고 잠재 고객의 이탈을 초래하고 있습니다."
+            visitor_solution = "영수증 리뷰 이벤트 및 매장 방문 고객 대상 즉시 참여 혜택을 설계하여 방문자 리뷰 볼륨을 단기간에 대폭 끌어올려야 합니다."
         elif visitor_reviews < 100:
-            visitor_problem = f"현재 방문자 리뷰가 <span class='highlight-red'>{visitor_reviews}개</span>로 보통 수준이나, 상위 노출 매장들의 리뷰량에 비해 경쟁 우위를 확보하지 못한 상태입니다."
-            visitor_solution = "결제 고객 대상 리뷰 작성 유도 프로세스를 체계화하여 일정한 리뷰 유입 주기를 유지해야 합니다."
+            visitor_problem = f"입력하신 방문자 리뷰가 총 <span class='highlight-red'>{visitor_reviews}개</span>로 보통 수준이나, 상위 노출 매장들의 리뷰량에 비해 경쟁 우위를 확보하지 못해 유입 전환율이 정체되어 있습니다."
+            visitor_solution = "결제 고객 대상 리뷰 작성 유도 프로세스를 체계화하고 재방문 유도 혜택을 연계하여 일정한 방문자 리뷰 유입 주기를 유지해야 합니다."
         else:
-            visitor_problem = f"현재 방문자 리뷰가 <span class='highlight-red'>{visitor_reviews}개</span>로 충분하나, 최신 리뷰 갱신 주기나 키워드 매칭 관리가 다소 미흡합니다."
-            visitor_solution = "주기적인 피드백 관리와 핵심 키워드가 포함된 양질의 방문자 리뷰를 지속적으로 누적해야 합니다."
+            visitor_problem = f"입력하신 방문자 리뷰가 총 <span class='highlight-red'>{visitor_reviews}개</span>로 양호하나, 최신 리뷰 갱신 주기나 세부 키워드 매칭 관리가 다소 미흡합니다."
+            visitor_solution = "주기적인 피드백 관리와 핵심 키워드가 자연스럽게 녹아든 양질의 방문자 리뷰를 지속적으로 누적해야 합니다."
 
-        # 블로그 리뷰 문제점 및 개선점 생성
+        # 블로그 리뷰 문제점 및 개선점 생성 (입력된 수치 반영 명확화)
         if blog_reviews < 10:
-            blog_problem = f"현재 블로그 리뷰가 <span class='highlight-red'>{blog_reviews}개</span>로 턱없이 부족하여, 검색 이용자들이 바이럴 정보를 접하지 못해 브랜드 신뢰 형성과 예약 전환에 큰 걸림돌이 되고 있습니다."
-            blog_solution = "지역 및 업종 타겟 맞춤형 체험단 마케팅을 집중 집행하여 검색 포털 내 브랜드 노출량과 신뢰성 리포트를 확보해야 합니다."
+            blog_problem = f"입력하신 블로그 리뷰가 총 <span class='highlight-red'>{blog_reviews}개</span>로 매우 부족하여, 검색 이용자들이 충분한 바이럴 정보를 접하지 못해 브랜드 신뢰 형성과 예약 전환에 큰 걸림돌이 되고 있습니다."
+            blog_solution = "지역 및 업종 타겟 맞춤형 체험단 마케팅을 집중 집행하여 검색 포털 내 브랜드 노출량과 신뢰성 리포트를 확실하게 확보해야 합니다."
         elif blog_reviews < 50:
-            blog_problem = f"현재 블로그 리뷰가 <span class='highlight-red'>{blog_reviews}개</span>로 기본 홍보는 되어 있으나, 상권 내 선두 경쟁사들을 압도하기에는 노출 볼륨이 다소 부족합니다."
+            blog_problem = f"입력하신 블로그 리뷰가 총 <span class='highlight-red'>{blog_reviews}개</span>로 기본 홍보는 진행되었으나, 상권 내 선두 경쟁사들을 압도하기에는 검색 노출 볼륨이 다소 부족합니다."
             blog_solution = "핵심 대표키워드와 연계된 상위 노출형 블로그 포스팅을 정기적으로 발행하여 바이럴 장악력을 높여야 합니다."
         else:
-            blog_problem = f"현재 블로그 리뷰가 <span class='highlight-red'>{blog_reviews}개</span>로 양호한 편이나, 최신 트렌드 키워드 반영 및 관리 주기 최적화가 필요합니다."
+            blog_problem = f"입력하신 블로그 리뷰가 총 <span class='highlight-red'>{blog_reviews}개</span>로 탄탄한 편이나, 최신 트렌드 키워드 반영 및 관리 주기 최적화가 필요합니다."
             blog_solution = "검색 알고리즘 변화에 맞춘 고품질 리뷰 콘텐츠를 지속 공급하여 바이럴 지수를 최상위로 유지해야 합니다."
 
         # 최종 리포트 HTML 생성
